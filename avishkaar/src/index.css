@@ -1,0 +1,368 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 50% 5%;
+    --foreground: 200 100% 95%;
+
+    --card: 210 50% 8%;
+    --card-foreground: 200 100% 95%;
+
+    --popover: 210 50% 8%;
+    --popover-foreground: 200 100% 95%;
+
+    --primary: 195 100% 50%;
+    --primary-foreground: 210 50% 5%;
+
+    --secondary: 220 85% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 30% 15%;
+    --muted-foreground: 200 20% 60%;
+
+    --accent: 175 100% 45%;
+    --accent-foreground: 210 50% 5%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 200 50% 20%;
+    --input: 200 50% 20%;
+    --ring: 195 100% 50%;
+
+    --radius: 0.75rem;
+
+    /* Water theme custom tokens */
+    --water-cyan: 195 100% 50%;
+    --water-blue: 220 85% 55%;
+    --water-teal: 175 100% 45%;
+    --deep-sea: 210 80% 20%;
+    --foam: 200 30% 90%;
+    --wave: 200 50% 30%;
+    
+    /* Gradients */
+    --gradient-water: linear-gradient(135deg, hsl(220, 85%, 55%) 0%, hsl(195, 100%, 50%) 50%, hsl(175, 100%, 45%) 100%);
+    --gradient-ocean: linear-gradient(180deg, hsl(195, 100%, 50%) 0%, hsl(220, 85%, 40%) 100%);
+    --gradient-depth: linear-gradient(135deg, hsl(210, 50%, 5%) 0%, hsl(220, 85%, 25%) 50%, hsl(210, 50%, 5%) 100%);
+    
+    /* Shadows & Glows */
+    --glow-water: 0 0 30px hsl(195, 100%, 50%, 0.6), 0 0 60px hsl(220, 85%, 55%, 0.4);
+    --glow-ocean: 0 0 20px hsl(175, 100%, 45%, 0.5);
+    --shadow-water: 0 10px 40px -10px hsl(195, 100%, 50%, 0.5);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 210 50% 5%;
+    --foreground: 200 100% 95%;
+    --card: 210 50% 8%;
+    --card-foreground: 200 100% 95%;
+    --popover: 210 50% 8%;
+    --popover-foreground: 200 100% 95%;
+    --primary: 195 100% 50%;
+    --primary-foreground: 210 50% 5%;
+    --secondary: 220 85% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 30% 15%;
+    --muted-foreground: 200 20% 60%;
+    --accent: 175 100% 45%;
+    --accent-foreground: 210 50% 5%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 200 50% 20%;
+    --input: 200 50% 20%;
+    --ring: 195 100% 50%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+
+  /* GPU acceleration for smoother animations */
+  .gpu-accelerate {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Optimize animations for mobile */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Smooth scrolling for anchor links */
+  [id] {
+    scroll-margin-top: 80px;
+  }
+}
+
+@layer utilities {
+  .text-gradient-water {
+    background: linear-gradient(135deg, hsl(175, 100%, 45%) 0%, hsl(195, 100%, 50%) 50%, hsl(220, 85%, 55%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-water {
+    background: linear-gradient(135deg, hsl(220, 85%, 55%) 0%, hsl(195, 100%, 50%) 50%, hsl(175, 100%, 45%) 100%);
+  }
+
+  .bg-gradient-ocean {
+    background: linear-gradient(180deg, hsl(195, 100%, 50%) 0%, hsl(220, 85%, 40%) 100%);
+  }
+
+  .glow-water {
+    box-shadow: 0 0 30px hsl(195, 100%, 50%, 0.6), 0 0 60px hsl(220, 85%, 55%, 0.4);
+  }
+
+  .glow-ocean {
+    box-shadow: 0 0 20px hsl(175, 100%, 45%, 0.5);
+  }
+
+  .animate-ripple {
+    animation: ripple 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+
+  .animate-bubble-rise {
+    animation: bubbleRise 4s ease-out infinite;
+  }
+}
+
+/* Performance-optimized keyframes using transform and opacity only */
+@keyframes ripple {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateZ(0); }
+  50% { transform: translateY(-20px) translateZ(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { 
+    box-shadow: 0 0 30px hsl(195, 100%, 50%, 0.6), 0 0 60px hsl(220, 85%, 55%, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 50px hsl(195, 100%, 50%, 0.8), 0 0 100px hsl(220, 85%, 55%, 0.6);
+  }
+}
+
+@keyframes bubbleRise {
+  0% {
+    transform: translateY(0) scale(1) translateZ(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100px) scale(0.5) translateZ(0);
+    opacity: 0;
+  }
+}
+
+/* Water droplet fall animation */
+@keyframes dropletFall {
+  0% {
+    transform: translateY(-20px) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.animate-droplet-fall {
+  animation: dropletFall 6s ease-in infinite;
+}
+
+/* Smooth timeline flow */
+@keyframes timelineFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 200%;
+  }
+}
+
+.animate-timeline-flow {
+  animation: timelineFlow 3s linear infinite;
+}
+
+/* Wave animation */
+@keyframes wave {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(-5px) translateY(-3px);
+  }
+  50% {
+    transform: translateX(0) translateY(-5px);
+  }
+  75% {
+    transform: translateX(5px) translateY(-3px);
+  }
+}
+
+.animate-wave {
+  animation: wave 3s ease-in-out infinite;
+}
+
+/* Ripple expand animation */
+@keyframes ripple-expand {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.animate-ripple-expand {
+  animation: ripple-expand 2s ease-out infinite;
+}
+
+/* Water shimmer effect */
+@keyframes water-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-water-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(195, 100%, 50%, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: water-shimmer 3s linear infinite;
+}
+
+/* Wave flow animation for section backgrounds */
+@keyframes wave-flow {
+  0% {
+    transform: translateX(-100%) translateY(0);
+  }
+  50% {
+    transform: translateX(0%) translateY(-10px);
+  }
+  100% {
+    transform: translateX(100%) translateY(0);
+  }
+}
+
+.animate-wave-flow {
+  animation: wave-flow 8s ease-in-out infinite;
+}
+
+/* Smooth scroll container */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Will-change for frequently animated elements */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* Contain paint for better performance */
+.contain-paint {
+  contain: paint;
+}
+
+/* Touch optimization */
+@supports (touch-action: manipulation) {
+  a, button {
+    touch-action: manipulation;
+  }
+}
+
+/* Section water background effect */
+.water-bg-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.water-bg-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    hsl(195, 100%, 50%, 0.1) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
