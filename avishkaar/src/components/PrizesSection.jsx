@@ -28,7 +28,7 @@ const prizes = [
 ];
 const PrizesSection = () => {
     return (<section className="relative py-20 md:py-32 overflow-hidden" id="prizes">
-      {/* Background effects */}
+      
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl"/>
       </div>
@@ -46,11 +46,11 @@ const PrizesSection = () => {
           </p>
         </motion.div>
 
-        {/* Main Prizes */}
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {prizes.map((prize, index) => (<motion.div key={prize.place} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.15 }} className={`relative ${index === 0 ? "md:-mt-8" : ""}`}>
               <div className={`relative h-full p-8 bg-card border-2 border-primary/30 rounded-2xl ${prize.glow} hover:scale-105 transition-transform duration-300`}>
-                {/* Gradient overlay */}
+                
                 <div className={`absolute inset-0 bg-gradient-to-b ${prize.gradient} opacity-5 rounded-2xl`}/>
                 
                 <div className="relative text-center">

@@ -9,7 +9,6 @@ const MouseFollowParticles = () => {
     const mouseY = useMotionValue(0);
     const springX = useSpring(mouseX, { stiffness: 300, damping: 30 });
     const springY = useSpring(mouseY, { stiffness: 300, damping: 30 });
-    // Create trail particle (water bubbles)
     const createParticle = useCallback((x, y) => {
         return {
             id: Date.now() + Math.random(),
@@ -21,7 +20,6 @@ const MouseFollowParticles = () => {
             type: 'trail',
         };
     }, []);
-    // Create burst particles on click
     const createBurstParticles = useCallback((x, y) => {
         const count = 12 + Math.floor(Math.random() * 8);
         return Array.from({ length: count }, (_, i) => ({
@@ -36,7 +34,6 @@ const MouseFollowParticles = () => {
             distance: 80 + Math.random() * 120,
         }));
     }, []);
-    // Create rising particles (bubbles)
     const createRisingParticle = useCallback(() => {
         return {
             id: Date.now() + Math.random(),
@@ -48,7 +45,6 @@ const MouseFollowParticles = () => {
             type: 'rising',
         };
     }, []);
-    // Initialize rising particles
     useEffect(() => {
         const initialRising = Array.from({ length: 8 }, createRisingParticle);
         setRisingParticles(initialRising);
@@ -63,7 +59,6 @@ const MouseFollowParticles = () => {
         }, 400);
         return () => clearInterval(interval);
     }, [createRisingParticle]);
-    // Remove old rising particles
     useEffect(() => {
         const interval = setInterval(() => {
             setRisingParticles(prev => prev.slice(1));
@@ -103,7 +98,6 @@ const MouseFollowParticles = () => {
         if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
             const burst = createBurstParticles(x, y);
             setBurstParticles(prev => [...prev, ...burst]);
-            // Clean up burst particles after animation
             setTimeout(() => {
                 setBurstParticles(prev => prev.filter(p => !burst.includes(p)));
             }, 1000);
@@ -117,7 +111,6 @@ const MouseFollowParticles = () => {
             window.removeEventListener('click', handleClick);
         };
     }, [handleMouseMove, handleClick]);
-    // Remove old trail particles
     useEffect(() => {
         const interval = setInterval(() => {
             setParticles(prev => prev.slice(1));
@@ -125,7 +118,7 @@ const MouseFollowParticles = () => {
         return () => clearInterval(interval);
     }, []);
     return (<div className="absolute inset-0 pointer-events-none z-[5] overflow-hidden">
-      {/* Rising ambient particles (bubbles) */}
+      
       {risingParticles.map((particle) => (<motion.div key={particle.id} className="absolute rounded-full" style={{
                 left: `${particle.x}%`,
                 bottom: 0,
@@ -143,7 +136,7 @@ const MouseFollowParticles = () => {
                 ease: "easeOut",
             }}/>))}
 
-      {/* Main cursor glow */}
+      
       {isActive && (<motion.div className="absolute w-40 h-40 rounded-full" style={{
                 x: springX,
                 y: springY,
@@ -153,7 +146,7 @@ const MouseFollowParticles = () => {
                 filter: 'blur(15px)',
             }}/>)}
 
-      {/* Trailing particles (bubbles) */}
+      
       {particles.map((particle) => (<motion.div key={particle.id} className="absolute rounded-full" initial={{
                 x: particle.x,
                 y: particle.y,
@@ -176,7 +169,7 @@ const MouseFollowParticles = () => {
                 translateY: '-50%',
             }}/>))}
 
-      {/* Burst particles on click */}
+      
       {burstParticles.map((particle) => {
             const radians = ((particle.angle || 0) * Math.PI) / 180;
             const targetX = particle.x + Math.cos(radians) * (particle.distance || 100);
@@ -204,7 +197,7 @@ const MouseFollowParticles = () => {
                 }}/>);
         })}
 
-      {/* Click ripple effect */}
+      
       {burstParticles.length > 0 && (<motion.div className="absolute rounded-full" initial={{ scale: 0, opacity: 0.8 }} animate={{ scale: 3, opacity: 0 }} transition={{ duration: 0.5 }} style={{
                 x: burstParticles[0]?.x || 0,
                 y: burstParticles[0]?.y || 0,
@@ -216,7 +209,7 @@ const MouseFollowParticles = () => {
                 filter: 'blur(5px)',
             }}/>)}
 
-      {/* Inner bright cursor */}
+      
       {isActive && (<motion.div className="absolute w-5 h-5 rounded-full" style={{
                 x: springX,
                 y: springY,

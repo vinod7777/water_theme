@@ -25,28 +25,28 @@ const features = [
 ];
 const AboutSection = () => {
     return (<section className="relative py-20 md:py-32 overflow-hidden water-bg-effect" id="about">
-      {/* Background */}
+      
       <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background"/>
       
-      {/* Wave Dividers */}
+      
       <WaveDivider variant="top"/>
-      <WaveDivider variant="bottom"/>
+    
       
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header */}
+        
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-4">
           <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-water tracking-wide">
             ABOUT AVISHKAAR
           </h2>
         </motion.div>
 
-        {/* Underline */}
+        
         <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="w-24 h-1 bg-primary mx-auto mb-16"/>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Terminal-style readme card */}
+          
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }} className="bg-card border border-border rounded-xl overflow-hidden">
-            {/* Terminal header */}
+            
             <div className="flex items-center gap-2 px-4 py-3 bg-background/50 border-b border-border">
               <div className="w-3 h-3 rounded-full bg-primary"/>
               <div className="w-3 h-3 rounded-full bg-secondary"/>
@@ -54,7 +54,7 @@ const AboutSection = () => {
               <span className="ml-2 font-mono text-sm text-muted-foreground">readme.md</span>
             </div>
 
-            {/* Terminal content */}
+            
             <div className="p-6 space-y-6 font-mono text-sm leading-relaxed">
               <p>
                 <span className="text-primary">⚡</span>{" "}
@@ -77,7 +77,7 @@ const AboutSection = () => {
             </div>
           </motion.div>
 
-          {/* Feature cards grid */}
+          
           <div className="grid grid-cols-2 gap-4">
             {features.map((feature, index) => (<motion.div key={feature.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }} className="group">
                 <div className="relative h-full p-6 bg-card border border-border rounded-xl hover:border-primary/50 transition-all duration-300 hover:glow-ocean text-center">

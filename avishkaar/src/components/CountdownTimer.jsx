@@ -8,7 +8,6 @@ const CountdownTimer = () => {
         seconds: 0,
     });
     useEffect(() => {
-        // Set target date to 15 days from now for demo
         const targetDate = new Date();
         targetDate.setDate(targetDate.getDate() + 15);
         const calculateTimeLeft = () => {

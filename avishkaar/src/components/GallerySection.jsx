@@ -18,14 +18,14 @@ const GallerySection = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-100px" });
     return (<section ref={ref} className="relative py-24 overflow-hidden water-bg-effect" id="gallery">
-      {/* Background */}
+      
       <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background"/>
       
-      {/* Wave Dividers */}
-      <WaveDivider variant="top"/>
-      <WaveDivider variant="bottom"/>
       
-      {/* Animated background glow */}
+      <WaveDivider variant="top"/>
+   
+      
+      
       <motion.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none" style={{
             background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.1), transparent 70%)',
         }} animate={{
@@ -49,11 +49,11 @@ const GallerySection = () => {
         }} transition={{ duration: 2, repeat: Infinity }}/>
         </motion.div>
 
-        {/* Bento Gallery Grid */}
+        
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
           {galleryImages.map((image, index) => (<motion.div key={image.id} initial={{ opacity: 0, scale: 0.9 }} animate={isInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: index * 0.08 }} whileHover={{ scale: 1.03, zIndex: 10 }} className={`relative overflow-hidden group cursor-pointer rounded-2xl border border-border ${image.size === "large" ? "col-span-2 row-span-2" :
                 image.size === "tall" ? "row-span-2" : ""}`}>
-              {/* Water gradient background */}
+              
               <motion.div className={`absolute inset-0 ${index % 4 === 0 ? "bg-gradient-to-br from-primary/30 via-secondary/20 to-accent/30" :
                 index % 4 === 1 ? "bg-gradient-to-br from-accent/30 via-primary/20 to-secondary/30" :
                     index % 4 === 2 ? "bg-gradient-to-br from-secondary/30 via-accent/20 to-primary/30" :
@@ -61,7 +61,7 @@ const GallerySection = () => {
                 opacity: [0.6, 0.8, 0.6],
             }} transition={{ duration: 3, repeat: Infinity, delay: index * 0.2 }}/>
               
-              {/* Animated bubble particles */}
+              
               {[...Array(3)].map((_, i) => (<motion.div key={i} className="absolute w-2 h-2 rounded-full bg-primary/60" style={{
                     left: `${20 + i * 30}%`,
                     bottom: '10%',
@@ -75,18 +75,18 @@ const GallerySection = () => {
                     delay: i * 0.5 + index * 0.1,
                 }}/>))}
               
-              {/* Grid Pattern Overlay */}
+              
               <div className="absolute inset-0 opacity-10" style={{
                 backgroundImage: 'linear-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary) / 0.3) 1px, transparent 1px)',
                 backgroundSize: '20px 20px',
             }}/>
               
-              {/* Camera icon placeholder */}
+              
               <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-10 transition-opacity">
                 <Camera className="w-16 h-16 text-foreground"/>
               </div>
               
-              {/* Hover Overlay */}
+              
               <motion.div className="absolute inset-0 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center" whileHover={{
                 background: 'linear-gradient(135deg, hsl(195, 100%, 50% / 0.1), hsl(175, 100%, 45% / 0.1))',
             }}>
@@ -103,7 +103,7 @@ const GallerySection = () => {
                 </div>
               </motion.div>
 
-              {/* Water border corners */}
+              
               <motion.div className="absolute top-3 left-3 w-6 h-6 border-l-2 border-t-2 border-primary/60" animate={{
                 borderColor: ['hsl(195, 100%, 50% / 0.4)', 'hsl(175, 100%, 45% / 0.8)', 'hsl(195, 100%, 50% / 0.4)'],
             }} transition={{ duration: 2, repeat: Infinity }}/>
@@ -111,17 +111,17 @@ const GallerySection = () => {
                 borderColor: ['hsl(175, 100%, 45% / 0.4)', 'hsl(195, 100%, 50% / 0.8)', 'hsl(175, 100%, 45% / 0.4)'],
             }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}/>
 
-              {/* Animated border glow on hover */}
+              
               <motion.div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
                 boxShadow: '0 0 20px hsl(195, 100%, 50% / 0.4), inset 0 0 20px hsl(195, 100%, 50% / 0.1)',
             }}/>
             </motion.div>))}
         </div>
 
-        {/* View More Button */}
+        
         <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.4 }} className="text-center mt-12">
           <motion.button className="relative px-8 py-4 font-display font-bold text-foreground rounded-full overflow-hidden group" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            {/* Button water border */}
+            
             <motion.div className="absolute inset-0 rounded-full p-[2px]" style={{
             background: 'linear-gradient(135deg, hsl(175, 100%, 45%), hsl(195, 100%, 50%), hsl(220, 85%, 55%), hsl(175, 100%, 45%))',
             backgroundSize: '300% 300%',

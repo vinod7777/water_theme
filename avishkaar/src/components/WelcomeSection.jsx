@@ -5,14 +5,14 @@ import WaveDivider from "./WaveDivider";
 import WaterTextEffect from "./WaterTextEffect";
 const WelcomeSection = () => {
     return (<section className="relative py-24 md:py-32 overflow-hidden water-bg-effect" id="welcome">
-      {/* Background */}
+      
       <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background"/>
 
-      {/* Wave Dividers */}
+      
       <WaveDivider variant="top"/>
       <WaveDivider variant="bottom"/>
 
-      {/* Animated background glow */}
+      
       <motion.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none" style={{
             background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.15), transparent 60%)',
         }} animate={{
@@ -20,7 +20,7 @@ const WelcomeSection = () => {
             opacity: [0.3, 0.5, 0.3],
         }} transition={{ duration: 6, repeat: Infinity }}/>
 
-      {/* Floating bubbles */}
+      
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(15)].map((_, i) => (<motion.div key={i} className="absolute w-2 h-2 rounded-full" style={{
                 left: `${Math.random() * 100}%`,
@@ -40,7 +40,7 @@ const WelcomeSection = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Welcome Header with water effect */}
+        
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center mb-8">
           <WaterTextEffect id="welcomeTitle">
             <motion.h2 className="text-3xl md:text-5xl font-display font-black italic mb-4 text-gradient-water">
@@ -49,21 +49,21 @@ const WelcomeSection = () => {
           </WaterTextEffect>
         </motion.div>
 
-        {/* Same Typing Effect as Hero Section with water effect */}
+        
         <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="mb-4">
           <WaterTextEffect id="welcomeAvishkaar">
             <TypingEffect />
           </WaterTextEffect>
         </motion.div>
 
-        {/* Season 4 */}
+        
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="text-center mb-12">
           <h3 className="text-2xl md:text-4xl font-display font-bold text-foreground tracking-[0.3em]">
             SEASON 4
           </h3>
         </motion.div>
 
-        {/* Welcome Text */}
+        
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="max-w-4xl mx-auto text-center">
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
             Welcome to the Official Website of Avishkaar Season 4 — a high-energy arena where innovation meets impact. 
@@ -75,10 +75,10 @@ const WelcomeSection = () => {
           </p>
         </motion.div>
 
-        {/* CTA Button */}
+        
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="text-center mt-12">
           <motion.button className="relative px-10 py-5 font-display font-bold text-lg text-foreground rounded-full overflow-hidden group" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => window.open('https://unstop.com/o/3C4O1aP?lb=O4B2h3r', '_blank')}>
-            {/* Animated water border */}
+            
             <motion.div className="absolute inset-0 rounded-full p-[3px]" style={{
             background: 'linear-gradient(135deg, hsl(175, 100%, 45%), hsl(195, 100%, 50%), hsl(220, 85%, 55%), hsl(175, 100%, 45%))',
             backgroundSize: '400% 400%',
@@ -88,7 +88,7 @@ const WelcomeSection = () => {
               <div className="w-full h-full bg-card rounded-full"/>
             </motion.div>
 
-            {/* Glow effect */}
+            
             <motion.div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
             boxShadow: '0 0 30px hsl(195, 100%, 50% / 0.5), 0 0 60px hsl(175, 100%, 45% / 0.3)',
         }}/>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Mail, MapPin, Droplets, X, Menu } from 'lucide-react';
+import { Phone, Mail, MapPin, Code2, X, Menu } from 'lucide-react';
+import { WaterDropletLogo } from "@/components/ui/water-droplet-logo";
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -48,21 +49,21 @@ const Navbar = () => {
         { name: 'Tracks', to: '/tracks' },
     ];
     return (<>
-      {/* Fixed Header Bar */}
+      
       <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
             ? 'bg-background/95 backdrop-blur-lg border-b border-primary/20'
             : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20 md:h-24">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group z-[60]">
-              <Droplets className="w-8 h-8 text-primary group-hover:animate-ripple"/>
-              <span className="font-display font-bold text-xl text-gradient-water">
+            
+            <Link to="/" className="flex items-center gap-3 group z-[60]">
+              <WaterDropletLogo className="shrink-0 drop-shadow-[0_0_18px_rgba(34,211,238,0.55)]" />
+              <span className="font-display font-bold text-xl tracking-[0.12em] text-cyan-50 group-hover:text-cyan-200 transition-colors">
                 AVISHKAAR S4
               </span>
             </Link>
 
-            {/* Menu Button */}
+            
             <button onClick={() => setIsOpen(!isOpen)} className="z-[60] inline-flex items-center justify-center p-2 rounded-lg text-primary hover:text-primary/80 focus:outline-none transition-colors" aria-label="Toggle menu">
               <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
                 {isOpen ? (<X className="w-8 h-8"/>) : (<Menu className="w-8 h-8"/>)}
@@ -72,10 +73,10 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Fullscreen Menu Overlay */}
+      
       <AnimatePresence>
         {isOpen && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl overflow-y-auto">
-            {/* Water Background Effects */}
+            
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               <motion.div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" animate={{
                 scale: [1, 1.2, 1],
@@ -89,7 +90,7 @@ const Navbar = () => {
 
             <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
               <div className="grid md:grid-cols-2 gap-12 min-h-[calc(100vh-8rem)]">
-                {/* Navigation Links */}
+                
                 <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.4, delay: 0.1 }} className="flex flex-col justify-center">
                   <nav className="space-y-4">
                     {navItems.map((item, index) => (<motion.div key={item.name} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + index * 0.05 }}>
@@ -102,29 +103,29 @@ const Navbar = () => {
                       </motion.div>))}
                   </nav>
 
-                  {/* Register Button */}
+                  
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-8">
-                    <a href="https://unstop.com/o/3C4O1aP?lb=O4B2h3r" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-display font-bold text-lg rounded-full hover:bg-primary/90 transition-colors">
+                    <a href="https://unstop.com/o/3C4O1aP?lb=O4B2h3r" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 text-white font-display font-bold text-lg shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:shadow-cyan-400/40 transition-shadow">
                       Register Now
-                      <Droplets className="w-5 h-5"/>
+                      <Code2 className="w-5 h-5"/>
                     </a>
                   </motion.div>
                 </motion.div>
 
-                {/* Info Panel */}
+                
                 <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} transition={{ duration: 0.4, delay: 0.2 }} className="flex flex-col justify-center">
                   <div className="bg-card/50 border border-primary/20 rounded-2xl p-6 md:p-8">
-                    {/* Title */}
+                    
                     <h2 className="text-2xl md:text-3xl font-display font-bold text-gradient-water mb-4">
                       Avishkaar Season 4
                     </h2>
 
-                    {/* Description */}
+                    
                     <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-6">
                       Avishkaar is a 48-hour innovation marathon that challenges bright minds to turn bold ideas into real-world solutions. After three successful seasons, Avishkaar returns bigger and better — now in two phases: a 24-hour online hackathon and an on-campus 48-hour grand finale.
                     </p>
 
-                    {/* Social Links */}
+                    
                     <div className="flex gap-4 mb-8">
                       <a href="#" className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-colors" aria-label="Instagram">
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -148,7 +149,7 @@ const Navbar = () => {
                       </a>
                     </div>
 
-                    {/* Contact Info */}
+                    
                     <div className="space-y-4">
                       <h3 className="text-lg font-display font-bold text-foreground">
                         Contact Us
@@ -156,7 +157,7 @@ const Navbar = () => {
                       
                       <a href="tel:+917386759626" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
                         <Phone className="w-4 h-4 text-primary"/>
-                        <span className="text-sm">K. Kranthi Kiran: +91 7386759626</span>
+                        <span className="text-sm">   </span>
                       </a>
                       
                       <a href="tel:+919866854604" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">

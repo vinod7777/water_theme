@@ -61,14 +61,13 @@ const themes = [
 ];
 const ThemesSection = () => {
     return (<section className="relative py-20 md:py-32 overflow-hidden water-bg-effect" id="themes">
-      {/* Background */}
+      
       <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background"/>
       
-      {/* Wave Dividers */}
-      <WaveDivider variant="top"/>
-      <WaveDivider variant="bottom"/>
       
-      {/* Animated background particles */}
+      <WaveDivider variant="top"/>
+      
+      
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(20)].map((_, i) => (<motion.div key={i} className="absolute w-1 h-1 bg-primary/30 rounded-full" style={{
                 left: `${Math.random() * 100}%`,
@@ -85,17 +84,17 @@ const ThemesSection = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header */}
+        
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-4">
           <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-water tracking-wide">
             Themes Breakdown – What Problems You Can Solve?
           </h2>
         </motion.div>
 
-        {/* Underline */}
+        
         <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="w-24 h-1 bg-primary mx-auto mb-16"/>
 
-        {/* Themes Grid */}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {themes.map((theme, index) => (<motion.div key={theme.title} initial={{ opacity: 0, y: 30, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{
                 duration: 0.5,
@@ -110,16 +109,16 @@ const ThemesSection = () => {
               <div className={`relative h-full p-8 bg-card/80 backdrop-blur-sm border border-border rounded-2xl 
                 transition-all duration-500 hover:border-primary/50 
                 hover:shadow-lg hover:shadow-primary/20`}>
-                {/* Animated gradient overlay on hover */}
+                
                 <motion.div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
                 
-                {/* Glow effect */}
+                
                 <motion.div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
                 boxShadow: `inset 0 0 30px hsl(var(--primary) / 0.1)`,
             }}/>
 
                 <div className="relative text-center">
-                  {/* Icon container with animation */}
+                  
                   <motion.div className={`w-16 h-16 ${theme.bgColor} rounded-xl flex items-center justify-center mb-4 mx-auto
                       group-hover:scale-110 transition-transform duration-300`} whileHover={{
                 rotate: [0, -10, 10, 0],
@@ -128,13 +127,13 @@ const ThemesSection = () => {
                     <theme.icon className={`w-8 h-8 ${theme.color}`}/>
                   </motion.div>
                   
-                  {/* Title */}
+                  
                   <h3 className="text-lg font-display font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                     {theme.title}
                   </h3>
                 </div>
 
-                {/* Bottom glow line on hover */}
+                
                 <motion.div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent 
                     group-hover:w-3/4 transition-all duration-500 rounded-full"/>
               </div>

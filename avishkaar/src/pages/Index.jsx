@@ -9,10 +9,8 @@ import PartnersSection from "@/components/PartnersSection";
 import FAQSection from "@/components/FAQSection";
 import WelcomeSection from "@/components/WelcomeSection";
 import Footer from "@/components/Footer";
-import WaterDroplets from "@/components/WaterDroplets";
 const Index = () => {
     return (<div className="min-h-screen bg-background scroll-smooth overflow-x-hidden">
-      <WaterDroplets count={12}/>
       <Navbar />
       <main className="contain-paint">
         <HeroSection />

@@ -8,7 +8,7 @@ const WaveDivider = ({ variant = "bottom", className = "" }) => {
         <motion.path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" className="fill-accent/5" initial={{ opacity: 0, translateX: -30 }} animate={{ opacity: 1, translateX: [0, 30, -30, 0], translateY: [0, -4, 6, 0] }} transition={{ opacity: { duration: 3, delay: 0.6 }, translateX: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }, translateY: { duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.8 } }}/>
       </svg>
       
-      {/* Animated ripple circles */}
+      
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(3)].map((_, i) => (<motion.div key={i} className="absolute w-4 h-4 rounded-full bg-primary/30" style={{
                 left: `${20 + i * 30}%`,

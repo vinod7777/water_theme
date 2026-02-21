@@ -11,7 +11,7 @@ const Footer = () => {
         { name: 'Tracks', path: '/tracks' },
     ];
     const contacts = [
-        { icon: Phone, text: 'K.Kranthi Kiran : +91 7386759626', href: 'tel:+917386759626' },
+        { icon: Phone, text: ' : ', href: '' },
         { icon: Phone, text: 'S Vinod Kumar : +91 9866854604', href: 'tel:+919866854604' },
         { icon: MapPin, text: 'Aditya Institute of Technology And Management, Tekkali', href: '#' },
         { icon: Mail, text: 'avishkaar@adityatekkali.edu.in', href: 'mailto:avishkaar@adityatekkali.edu.in' },
@@ -23,10 +23,10 @@ const Footer = () => {
         { icon: Twitter, href: '#', label: 'Twitter' },
     ];
     return (<footer className="relative bg-gradient-to-b from-background to-card border-t border-primary/20">
-      {/* Main Footer Content */}
+      
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Quick Links */}
+          
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
             <h3 className="text-xl font-display font-bold text-gradient-water mb-6">Quick Links</h3>
             <ul className="space-y-3">
@@ -38,7 +38,7 @@ const Footer = () => {
             </ul>
           </motion.div>
 
-          {/* Contact Us */}
+          
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }}>
             <h3 className="text-xl font-display font-bold text-gradient-water mb-6">Contact Us</h3>
             <ul className="space-y-4">
@@ -51,7 +51,7 @@ const Footer = () => {
             </ul>
           </motion.div>
 
-          {/* Follow Us */}
+          
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} viewport={{ once: true }}>
             <h3 className="text-xl font-display font-bold text-gradient-water mb-6">Follow Us</h3>
             <div className="flex gap-4">
@@ -63,12 +63,12 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright Bar */}
+      
       <div className="border-t border-primary/10 bg-card/50">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-sm text-muted-foreground">
             Copyrights © 2025 Designed and developed by{' '}
-            <span className="text-primary">Bhargav</span>,{' '}
+            <span className="text-primary">S</span> .{' '}
             <span className="text-primary">Vinod kumar</span> and{' '}
             <span className="text-primary">Vinod kumar</span> From{' '}
             <span className="text-primary">SSC</span>. All rights reserved.

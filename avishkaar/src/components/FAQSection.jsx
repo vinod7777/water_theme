@@ -83,14 +83,14 @@ const FAQSection = () => {
         setOpenFAQ(openFAQ === id ? null : id);
     };
     return (<section className="relative py-24 overflow-hidden water-bg-effect" id="faq">
-      {/* Background */}
+      
       <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background"/>
 
-      {/* Wave Dividers */}
+      
       <WaveDivider variant="top"/>
-      <WaveDivider variant="bottom"/>
+ 
 
-      {/* Water glow effects */}
+      
       <motion.div className="absolute top-1/4 left-0 w-[400px] h-[400px] pointer-events-none" style={{
             background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.1), transparent 70%)',
         }} animate={{
@@ -105,7 +105,7 @@ const FAQSection = () => {
         }} transition={{ duration: 5, repeat: Infinity, delay: 2.5 }}/>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
+        
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center mb-16">
           <motion.h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-water">
             <Droplets className="inline-block w-10 h-10 mr-3 text-primary"/>
@@ -121,22 +121,22 @@ const FAQSection = () => {
         }} transition={{ duration: 2, repeat: Infinity }}/>
         </motion.div>
 
-        {/* FAQ Grid */}
+        
         <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Virtual Hackathon FAQs */}
+          
           <div>
             <motion.h3 initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-2xl md:text-3xl font-display font-bold mb-8 flex items-center gap-3 text-gradient-water">
-              <span>💻</span> Virtual Hackathon
+              Virtual Hackathon
             </motion.h3>
             <div>
               {faqData.virtual.map((faq, index) => (<FAQItem key={`virtual-${index}`} question={faq.question} answer={faq.answer} isOpen={openFAQ === `virtual-${index}`} onClick={() => handleToggle(`virtual-${index}`)} index={index}/>))}
             </div>
           </div>
 
-          {/* Physical Hackathon FAQs */}
+          
           <div>
             <motion.h3 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-2xl md:text-3xl font-display font-bold mb-8 flex items-center gap-3 text-gradient-water">
-              <span>🏢</span> Physical Hackathon
+            Physical Hackathon
             </motion.h3>
             <div>
               {faqData.physical.map((faq, index) => (<FAQItem key={`physical-${index}`} question={faq.question} answer={faq.answer} isOpen={openFAQ === `physical-${index}`} onClick={() => handleToggle(`physical-${index}`)} index={index}/>))}
@@ -144,13 +144,13 @@ const FAQSection = () => {
           </div>
         </div>
 
-        {/* Contact CTA */}
+        
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="text-center mt-16">
           <p className="text-muted-foreground mb-4">
             Still have questions? We're here to help!
           </p>
           <motion.button className="relative px-8 py-4 font-display font-bold text-foreground rounded-full overflow-hidden group" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            {/* Button water border */}
+            
             <motion.div className="absolute inset-0 rounded-full p-[2px]" style={{
             background: 'linear-gradient(135deg, hsl(175, 100%, 45%), hsl(195, 100%, 50%), hsl(220, 85%, 55%), hsl(175, 100%, 45%))',
             backgroundSize: '300% 300%',

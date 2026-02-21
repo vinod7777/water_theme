@@ -10,7 +10,10 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import TeamPage from "./pages/TeamPage";
 import TracksPage from "./pages/TracksPage";
+import LiquidDemo from "./pages/LiquidDemo";
 import NotFound from "./pages/NotFound";
+
+
 const queryClient = new QueryClient();
 const App = () => {
     const { PreloaderComponent } = usePreloader();
@@ -27,7 +30,8 @@ const App = () => {
             <Route path="/register" element={<RegisterPage />}/>
             <Route path="/team" element={<TeamPage />}/>
             <Route path="/tracks" element={<TracksPage />}/>
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/liquid-demo" element={<LiquidDemo />}/>
+            
             <Route path="*" element={<NotFound />}/>
           </Routes>
         </BrowserRouter>

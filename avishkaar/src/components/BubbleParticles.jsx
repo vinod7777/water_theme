@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 const BubbleParticles = () => {
-    // Memoize bubble data to prevent recalculation on re-renders
     const bubbles = useMemo(() => Array.from({ length: 20 }, (_, i) => ({
         id: i,
         x: Math.random() * 100,

@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 import { cn } from "@/lib/utils";
-// Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" };
 const ChartContext = React.createContext(null);
 function useChart() {
@@ -121,7 +120,6 @@ const ChartLegendContent = React.forwardRef(({ className, hideIcon = false, payl
     </div>);
 });
 ChartLegendContent.displayName = "ChartLegend";
-// Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(config, payload, key) {
     if (typeof payload !== "object" || payload === null) {
         return undefined;
