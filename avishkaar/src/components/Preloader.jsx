@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import * as THREE from "three";
+import ReadableParticleLoader from "./ReadableParticleLoader";
 const ThreeOceanPreloader = ({ progress, isExiting }) => {
     const mountRef = useRef(null);
 
@@ -123,7 +124,7 @@ const CausticsOverlay = ({ mousePos }) => (<div className="absolute inset-0 over
             </filter>
         </defs>
     </motion.svg>
-    
+
     {[...Array(8)].map((_, i) => (<motion.div key={`caustic-${i}`} className="absolute" style={{
         left: `${5 + i * 12}%`,
         top: '-20%',
@@ -253,7 +254,7 @@ const WaterSplash = ({ active }) => {
     if (!active)
         return null;
     return (<div className="absolute inset-0 pointer-events-none z-[6] flex items-center justify-center">
-        
+
         {splashDroplets.map((d) => (<motion.div key={`primary-${d.id}`} className="absolute rounded-full" style={{
             width: d.size,
             height: d.size,
@@ -271,7 +272,7 @@ const WaterSplash = ({ active }) => {
             repeat: Infinity,
             repeatDelay: 2.5,
         }} />))}
-        
+
         {secondarySplash.map((d) => (<motion.div key={`secondary-${d.id}`} className="absolute rounded-full" style={{
             width: d.size,
             height: d.size,
@@ -289,7 +290,7 @@ const WaterSplash = ({ active }) => {
             repeat: Infinity,
             repeatDelay: 3,
         }} />))}
-        
+
         <motion.div className="absolute rounded-full border-2" style={{
             borderColor: 'hsl(195, 100%, 70% / 0.7)',
             boxShadow: '0 0 40px hsl(195, 100%, 60% / 0.5), inset 0 0 40px hsl(195, 100%, 60% / 0.2)',
@@ -312,7 +313,7 @@ const WaterSplash = ({ active }) => {
             height: [5, 120, 250],
             opacity: [0.7, 0.2, 0],
         }} transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 1.8, ease: "easeOut", delay: 0.3 }} />
-        
+
         <motion.div className="absolute rounded-full" style={{
             width: 60,
             height: 60,
@@ -368,7 +369,7 @@ const InteractiveRipples = ({ mousePos }) => {
                     opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" }
                 }}
             />
-            
+
             {[...Array(3)].map((_, i) => (
                 <motion.div
                     key={`trail-${i}`}
@@ -632,12 +633,12 @@ const Preloader = ({ onComplete }) => {
                 if (prev >= 100) {
                     clearInterval(interval);
                     stopAmbient();
-                    setTimeout(onComplete, 500); // Wait 0.5s before exit
+                    setTimeout(onComplete, 500); 
                     return 100;
                 }
-                return prev + Math.random() * 2 + 1; // Approx 1-3% increment
+                return prev + Math.random() * 2 + 1; 
             });
-        }, 120); // Slower interval (120ms)
+        }, 90); // 90ms interval (approx 4.5s total loading + 0.5s exit = 5s total)
         return () => {
             clearInterval(interval);
             clearTimeout(titleTimer);
@@ -667,12 +668,12 @@ const Preloader = ({ onComplete }) => {
         x: { duration: 16, repeat: Infinity, ease: "easeInOut" },
         y: { duration: 14, repeat: Infinity, ease: "easeInOut" },
     }}>
-        
+
         <motion.div className="absolute inset-0" style={{
             background: 'radial-gradient(ellipse at 50% 80%, hsl(195, 100%, 20% / 0.4), transparent 70%)',
         }} animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
 
-        
+
         <motion.div className="absolute z-[1] rounded-full" style={{
             width: 400,
             height: 400,
@@ -683,7 +684,7 @@ const Preloader = ({ onComplete }) => {
             opacity: [0.3, 0.7, 0.3],
         }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
 
-        
+
         <div className="absolute inset-0 z-[20] pointer-events-none" style={{
             background: `radial-gradient(ellipse at center, transparent 40%, hsl(210, 60%, 3% / 0.5) 70%, hsl(210, 60%, 2% / 0.85) 100%)`,
         }} />
@@ -699,16 +700,17 @@ const Preloader = ({ onComplete }) => {
         <WaterRipples progress={clampedProgress} />
         <WaterSurface progress={clampedProgress} />
         <WaterSplash active={splashActive} />
+        {showTitle && <ReadableParticleLoader />}
 
-        
+
         <div className="relative z-[10] flex flex-col items-center">
 
-            
 
-            
+
+
             <AnimatePresence>
                 {showTitle && (<motion.div initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 0.8, ease: "easeOut" }} className="text-center mb-3 relative">
-                    
+
                     <svg className="absolute w-0 h-0">
                         <defs>
                             <filter id="waterTextFilter">
@@ -720,45 +722,15 @@ const Preloader = ({ onComplete }) => {
                         </defs>
                     </svg>
 
-                    <div className="relative" style={{ filter: 'url(#waterTextFilter)' }}>
-                        <motion.h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black tracking-[0.2em] relative" style={{
-                            background: 'linear-gradient(180deg, hsl(195, 100%, 80%) 0%, hsl(195, 100%, 60%) 30%, hsl(210, 90%, 50%) 60%, hsl(220, 85%, 40%) 100%)',
-                            backgroundSize: '100% 200%',
-                            backgroundClip: 'text',
-                            WebkitBackgroundClip: 'text',
-                            color: 'transparent',
-                            textShadow: 'none',
-                        }} animate={{
-                            backgroundPosition: ['0% 0%', '0% 100%', '0% 0%'],
-                        }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
+                    <div className="relative">
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black tracking-[0.2em] relative opacity-0 pointer-events-none">
                             AVISHKAAR
-
-                            
-                            <motion.span className="absolute inset-0" style={{
-                                background: 'linear-gradient(105deg, transparent 40%, hsl(195, 100%, 90% / 0.5) 45%, hsl(195, 100%, 95% / 0.7) 50%, transparent 55%)',
-                                backgroundSize: '200% 100%',
-                                backgroundClip: 'text',
-                                WebkitBackgroundClip: 'text',
-                                color: 'transparent',
-                            }} animate={{
-                                backgroundPosition: ['200% 0%', '-200% 0%'],
-                            }} transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }} aria-hidden="true">
-                                AVISHKAAR
-                            </motion.span>
-
-                            
-                            <motion.span className="absolute inset-0 blur-lg opacity-50" style={{
-                                background: 'linear-gradient(135deg, hsl(175, 100%, 55%), hsl(195, 100%, 60%), hsl(220, 85%, 60%))',
-                                backgroundClip: 'text',
-                                WebkitBackgroundClip: 'text',
-                                color: 'transparent',
-                            }} animate={{ opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }} aria-hidden="true">
-                                AVISHKAAR
-                            </motion.span>
-                        </motion.h1>
+                        </h1>
+                        {/* We use pointer-events-none and opacity-0 to reserve the exact layout space 
+                            so the text doesn't collapse and overlap with the 3D rendered particle text. */}
                     </div>
 
-                    
+
                     <div className="relative flex justify-center">
                         {[...Array(5)].map((_, i) => (<motion.div key={`drip-${i}`} className="absolute rounded-full" style={{
                             width: 3 + Math.random() * 3,
@@ -782,14 +754,14 @@ const Preloader = ({ onComplete }) => {
                 </motion.div>)}
             </AnimatePresence>
 
-            
+
             <AnimatePresence>
                 {showTitle && (<motion.p initial={{ opacity: 0, letterSpacing: '0.5em' }} animate={{ opacity: 1, letterSpacing: '0.4em' }} transition={{ duration: 1, delay: 0.3 }} className="text-sm md:text-lg font-display uppercase text-muted-foreground mb-10 tracking-[0.4em]">
                     Season 4 · 2026
                 </motion.p>)}
             </AnimatePresence>
 
-            
+
             <motion.div initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: '100%' }} transition={{ duration: 0.5, delay: 0.4 }} className="relative w-64 md:w-80">
                 <div className="relative h-3 rounded-full overflow-hidden" style={{
                     background: 'hsl(210, 50%, 15% / 0.6)',
@@ -835,12 +807,12 @@ const Preloader = ({ onComplete }) => {
             </motion.div>
         </div>
 
-        
+
         <motion.div className="absolute bottom-0 left-0 right-0 h-[40%] z-[0]" style={{
             background: 'linear-gradient(to top, hsl(195, 100%, 25% / 0.3), hsl(210, 60%, 15% / 0.15), transparent)',
         }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 3, repeat: Infinity }} />
 
-        
+
         <div className="absolute inset-0 z-[0] pointer-events-none" style={{
             background: 'radial-gradient(ellipse at center, transparent 40%, hsl(210, 60%, 3% / 0.7) 100%)',
         }} />

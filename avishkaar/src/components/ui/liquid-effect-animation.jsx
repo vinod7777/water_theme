@@ -1,22 +1,23 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useId } from "react";
 
 export function LiquidEffectAnimation() {
   const canvasRef = useRef(null);
+  const uid = useId().replace(/:/g, "");
+  const canvasId = `liquid-canvas-${uid}`;
 
   useEffect(() => {
-    // If the liquid app is already running, don't re-initialize it.
-    if (window.__liquidApp) {
-      return;
-    }
-
     if (!canvasRef.current) return;
+
+    // To prevent re-running if already mounted in strict mode or same id
+    if (canvasRef.current.dataset.initialized) return;
+    canvasRef.current.dataset.initialized = "true";
 
     const script = document.createElement("script");
     script.type = "module";
     script.textContent = `
       import LiquidBackground from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.22/build/backgrounds/liquid1.min.js";
 
-      const canvas = document.getElementById("liquid-canvas");
+      const canvas = document.getElementById("${canvasId}");
 
       if (canvas) {
         const app = LiquidBackground(canvas);
@@ -26,26 +27,27 @@ export function LiquidEffectAnimation() {
         app.liquidPlane.material.roughness = 0.4;
         app.liquidPlane.uniforms.displacementScale.value = 5;
         app.setRain(false);
-
-        window.__liquidApp = app;
       }
     `;
 
     document.body.appendChild(script);
 
-    // On the main page, we don't dispose the global app on unmount;
-    // this keeps the effect smoother by avoiding re-creation.
-    return () => {};
-  }, []);
+    return () => {
+      // cleanup script if needed
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [canvasId]);
 
-  
+
   return (
     <div
       className="absolute inset-0 m-0 w-full h-full touch-none overflow-hidden pointer-events-none"
     >
       <canvas
         ref={canvasRef}
-        id="liquid-canvas"
+        id={canvasId}
         className="absolute inset-0 w-full h-full"
       />
     </div>

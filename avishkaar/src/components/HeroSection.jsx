@@ -28,13 +28,13 @@ const HeroSection = () => {
 
   return (<section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
-    
+
     <div className="absolute inset-0 z-0">
       <OceanBackground />
       <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/60 pointer-events-none" />
     </div>
 
-    
+
     <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
       {floatingIcons.map((item, idx) => {
         const IconComponent = item.Icon;
@@ -57,34 +57,21 @@ const HeroSection = () => {
       })}
     </div>
 
-    
-    <div className="relative z-10 container mx-auto px-4 text-center text-cyan-50">
-      
-      <motion.div
-        initial={{ opacity: 0, y: -20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, type: "spring" }}
-        className="mt-4 md:mt-6 mb-8"
-      >
-        <span className="inline-flex items-center gap-3 rounded-full border border-cyan-300/40 bg-slate-950/20 px-6 py-2.5 text-xs md:text-sm font-display uppercase tracking-[0.3em] text-cyan-100 backdrop-blur-md shadow-[0_0_15px_rgba(34,211,238,0.3)]">
-          <Droplets className="w-4 h-4 text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]" />
-          <span className="drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">Ocean Hackathon · Season 4</span>
-        </span>
-      </motion.div>
 
-      
+    <div className="relative z-10 container mx-auto px-4 text-center text-cyan-50">
+
+
+
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, delay: 0.1, type: "spring" }}
-        className="mb-4"
+        className="mb-4 w-full -mb-8 h-[110px] md:h-[220px] flex flex-col items-center justify-center"
       >
-        <WaterTextEffect id="heroWater">
-          <TypingEffect />
-        </WaterTextEffect>
+        <TypingEffect />
       </motion.div>
 
-      
+
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -102,21 +89,10 @@ const HeroSection = () => {
         transition={{ delay: 0.3 }}
         className="mb-6"
       >
-        <h2
-          className="text-2xl md:text-4xl font-display font-semibold leading-tight drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(165,243,252,1), rgba(34,211,238,1), rgba(56,189,248,1))",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            color: "transparent",
-          }}
-        >
-          Code beneath the waves, ship ideas that surface to the world.
-        </h2>
+
       </motion.div>
 
-      
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -126,12 +102,12 @@ const HeroSection = () => {
 
       </motion.div>
 
-      
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mb-10 flex flex-col items-center justify-center gap-3 md:flex-row md:gap-5"
+        className="mb-4 flex flex-col items-center justify-center gap-3 md:flex-row md:gap-5"
       >
         <a
           href="https://unstop.com/o/3C4O1aP?lb=O4B2h3r"
@@ -143,6 +119,9 @@ const HeroSection = () => {
           <span className="drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">Join the Ocean Hack</span>
         </a>
 
+
+      </motion.div>
+      <motion.div className="mb-5">
         <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] md:text-xs font-mono text-cyan-50">
           <span className="rounded-full border border-cyan-300/30 bg-slate-950/30 backdrop-blur-md shadow-[0_0_10px_rgba(34,211,238,0.2)] px-4 py-1 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] hover:bg-cyan-900/30 hover:border-cyan-300/50 transition-colors">
             48 hrs · On‑campus finale
@@ -153,7 +132,6 @@ const HeroSection = () => {
         </div>
       </motion.div>
 
-      
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -184,7 +162,7 @@ const HeroSection = () => {
       </motion.div>
     </div>
 
-    
+
   </section>);
 };
 export default HeroSection;
