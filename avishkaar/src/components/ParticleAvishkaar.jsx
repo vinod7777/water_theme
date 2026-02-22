@@ -5,7 +5,6 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
     const mountRef = useRef(null);
     const textRef = useRef(text);
 
-    // Keep ref in sync so animation loop reads latest without re-running useEffect
     useEffect(() => {
         textRef.current = text;
     }, [text]);
@@ -23,7 +22,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         scene.fog = new THREE.FogExp2(0x020617, 0.005);
 
         const camera = new THREE.PerspectiveCamera(40, width / height, 1, 1000);
-        camera.position.set(0, 0, 120); // Proper distance to maintain size
+        camera.position.set(0, 0, 120);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
@@ -31,10 +30,12 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         container.appendChild(renderer.domElement);
 
         let particles;
-        const particleCount = 30000; // Increased massively for extreme density on big text
+        // [CHANGE HERE]: Total text particles (Density of the words)
+        const particleCount = 50000;
         let positions, colors, targets, velocities;
-        const colorBase = new THREE.Color(0xd0f8ff); // Extremely bright cyan-white
-        const colorActive = new THREE.Color(0xffffff); // Pure white for impact
+        // [CHANGE HERE]: Base text color glow
+        const colorBase = new THREE.Color(0xe0f2fe);
+        const colorActive = new THREE.Color(0xffffff);
         const clock = new THREE.Clock();
 
         const mouse = new THREE.Vector2();
@@ -57,13 +58,13 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         container.addEventListener('mouseleave', onMouseOut);
 
         const texCanvas = document.createElement('canvas');
-        texCanvas.width = 20;
-        texCanvas.height = 20;
+        texCanvas.width = 16;
+        texCanvas.height = 16;
         const context = texCanvas.getContext('2d');
         const gradient = context.createRadialGradient(8, 8, 0, 8, 8, 8);
-        gradient.addColorStop(0, 'rgba(52, 195, 200, 1)'); // Pure white core for maximum brightness
-        gradient.addColorStop(0.3, 'rgba(34, 154, 175, 0.8)'); // Light blue glow
-        gradient.addColorStop(1, 'rgba(56,189,248,0)'); // Fade
+        gradient.addColorStop(0, 'rgba(0, 191, 255, 1)');
+        gradient.addColorStop(0.5, 'rgba(0, 191, 255, 0.9)');
+        gradient.addColorStop(1, 'rgba(34, 211, 238, 0)');
         context.fillStyle = gradient;
         context.fillRect(0, 0, 16, 16);
         const particleTexture = new THREE.CanvasTexture(texCanvas);
@@ -88,8 +89,9 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
+        // [CHANGE HERE]: The size of the text particles
         const material = new THREE.PointsMaterial({
-            size: 2.5, // Increased size for even more luminous presence
+            size: 1.5,
             vertexColors: true,
             map: particleTexture,
             transparent: true,
@@ -100,9 +102,8 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         particles = new THREE.Points(geometry, material);
         scene.add(particles);
 
-        // 2D Canvas for text sampling (expanded for larger text)
         const canvas2d = document.createElement('canvas');
-        canvas2d.width = 2048; // Increased significantly to fit huge text without cropping
+        canvas2d.width = 2048;
         canvas2d.height = 512;
         const ctx2d = canvas2d.getContext('2d', { willReadFrequently: true });
 
@@ -110,7 +111,6 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
         const updateTargets = (newTextStr) => {
             if (!newTextStr || newTextStr.length === 0) {
-                // If text is empty, gather particles in random small sphere or just hide
                 for (let i = 0; i < particleCount; i++) {
                     targets[i * 3] = (Math.random() - 0.5) * 100;
                     targets[i * 3 + 1] = (Math.random() - 0.5) * 100;
@@ -120,35 +120,47 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
             }
 
             ctx2d.clearRect(0, 0, canvas2d.width, canvas2d.height);
-            ctx2d.fillStyle = '#FFFFFF';
+            ctx2d.fillStyle = '#2cc5d0ff';
 
-            // Apply massive scaling changes based on screen width
-            const isMobile = window.innerWidth < 768;
-            const fontSize = isMobile ? 110 : 250; // Slightly smaller more
-            const scaleFactor = isMobile ? 0.14 : 0.22; // Reduced multiplier for better balance
+            const width = window.innerWidth;
+            let fontSize, scaleFactor, lineWidth, yOffset;
 
-            ctx2d.font = `900 ${fontSize}px "Outfit", "Inter", sans-serif`;
+            if (width < 640) {
+                fontSize = 150;
+                scaleFactor = 0.15;
+                lineWidth = 3;
+                yOffset = 3;
+            } else if (width < 1024) {
+                fontSize = 250;
+                scaleFactor = 0.22;
+                lineWidth = 4;
+                yOffset = 5;
+            } else {
+                fontSize = 260;
+                scaleFactor = 0.24;
+                lineWidth = 5;
+                yOffset = 6;
+            }
+
+            ctx2d.font = `1000 ${fontSize}px "Outfit", "Inter", sans-serif`;
             ctx2d.textAlign = 'center';
             ctx2d.textBaseline = 'middle';
             ctx2d.lineJoin = 'round';
-            ctx2d.lineWidth = isMobile ? 12 : 24; // Thicker outline for text
+            ctx2d.lineWidth = lineWidth;
             ctx2d.strokeStyle = '#FFFFFF';
-            // Adjusted slightly up to ensure perfect visual center
             ctx2d.strokeText(newTextStr, canvas2d.width / 2, canvas2d.height / 2);
             ctx2d.fillText(newTextStr, canvas2d.width / 2, canvas2d.height / 2);
 
             const imageData = ctx2d.getImageData(0, 0, canvas2d.width, canvas2d.height).data;
             const validPixels = [];
 
-            // Step size restricts max particle count needed (skip pixels)
-            for (let y = 0; y < canvas2d.height; y += 2) { // Decreased step to 2 to gather vastly more target pixels
+            for (let y = 0; y < canvas2d.height; y += 2) {
                 for (let x = 0; x < canvas2d.width; x += 2) {
                     const idx = (y * canvas2d.width + x) * 4;
-                    if (imageData[idx + 3] > 128) { // if alpha > 128
+                    if (imageData[idx + 3] > 128) {
                         validPixels.push({
                             x: (x - canvas2d.width / 2) * scaleFactor,
-                            // Added an offset to raise the text perfectly center in the 3D viewport
-                            y: -(y - canvas2d.height / 2) * scaleFactor + (isMobile ? 3 : 6)
+                            y: -(y - canvas2d.height / 2) * scaleFactor + yOffset
                         });
                     }
                 }
@@ -156,7 +168,6 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
             if (validPixels.length === 0) return;
 
-            // Assign pixels to targets randomly so particle density is perfectly even across the whole word
             for (let i = 0; i < particleCount; i++) {
                 const p = validPixels[Math.floor(Math.random() * validPixels.length)];
                 targets[i * 3] = p.x + (Math.random() - 0.5) * 0.3;
@@ -189,11 +200,11 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
                     let ty = targets[i3 + 1];
                     let tz = targets[i3 + 2];
 
-                    // Subtle continuous float
-                    ty += Math.sin(tx * 0.3 + time * 1.5) * 0.2;
-                    tz += Math.cos(tx * 0.3 + time * 1.5) * 0.2;
+                    // [CHANGE HERE]: Text Wave/Float Effect - The amplitude and speed of the text floating
+                    // Multiply the Math.sin / Math.cos by a larger number to make the wave bigger (e.g., 1.5 or 2.5)
+                    ty += Math.sin(tx * 0.1 + time * 1.5) * 1.2; // Increased from 0.5 to 1.5
+                    tz += Math.cos(tx * 0.1 + time * 1.5) * 1.2; // Increased from 0.5 to 1.5
 
-                    // Mouse Interaction
                     let distToMouse = 999;
                     if (isMouseActive) {
                         const dx = px - mouse3D.x;
@@ -201,32 +212,33 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
                         const dz = pz - mouse3D.z;
                         distToMouse = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-                        const repelRadius = 10;
+                        // [CHANGE HERE]: Text Mouse Interaction - Effect Radius
+                        const repelRadius = 20; // increased radius
                         if (distToMouse < repelRadius) {
                             const force = (repelRadius - distToMouse) / repelRadius;
-                            tx += (dx / distToMouse) * force * 15;
-                            ty += (dy / distToMouse) * force * 15;
-                            tz += (dz / distToMouse) * force * 15;
+                            // [CHANGE HERE]: Text Mouse Interaction - Explode Force
+                            tx += (dx / distToMouse) * force * 45; // increased force
+                            ty += (dy / distToMouse) * force * 45;
+                            tz += (dz / distToMouse) * force * 45;
                         }
                     }
 
-                    // Faster and more snappy transitions (increased from 0.12 to 0.2)
-                    velocities[i3] += (tx - px) * 0.2;
-                    velocities[i3 + 1] += (ty - py) * 0.2;
-                    velocities[i3 + 2] += (tz - pz) * 0.2;
+                    velocities[i3] += (tx - px) * 0.04;
+                    velocities[i3 + 1] += (ty - py) * 0.04;
+                    velocities[i3 + 2] += (tz - pz) * 0.04;
 
-                    velocities[i3] *= 0.75;
-                    velocities[i3 + 1] *= 0.75;
-                    velocities[i3 + 2] *= 0.75;
+                    velocities[i3] *= 0.82;
+                    velocities[i3 + 1] *= 0.82;
+                    velocities[i3 + 2] *= 0.82;
 
                     posAttr.array[i3] += velocities[i3];
                     posAttr.array[i3 + 1] += velocities[i3 + 1];
                     posAttr.array[i3 + 2] += velocities[i3 + 2];
 
                     let currentColor = new THREE.Color(colAttr.array[i3], colAttr.array[i3 + 1], colAttr.array[i3 + 2]);
-                    let targetColor = distToMouse < 15 ? colorActive : colorBase;
+                    let targetColor = distToMouse < 20 ? colorActive : colorBase;
 
-                    currentColor.lerp(targetColor, 0.15);
+                    currentColor.lerp(targetColor, 0.1);
                     colAttr.array[i3] = currentColor.r;
                     colAttr.array[i3 + 1] = currentColor.g;
                     colAttr.array[i3 + 2] = currentColor.b;
@@ -248,7 +260,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
             camera.aspect = newWidth / newHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(newWidth, newHeight);
-            updateTargets(textRef.current); // Font size might change on resize
+            updateTargets(textRef.current);
         };
         window.addEventListener('resize', handleResize);
 
@@ -267,9 +279,8 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         };
     }, []);
 
-    // We keep styling and boundaries for the text
     return (
-        <div className="relative z-10 w-full h-[110px] md:h-[220px] flex items-center justify-center pointer-events-none">
+        <div className="relative z-10 w-full mt-6 -mb-12 h-[110px] md:h-[220px] flex items-center justify-center pointer-events-none">
             <div ref={mountRef} className="w-full h-full cursor-crosshair" />
         </div>
     );

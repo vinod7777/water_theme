@@ -28,12 +28,10 @@ const HeroSection = () => {
 
   return (<section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
-
     <div className="absolute inset-0 z-0">
       <OceanBackground />
       <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/60 pointer-events-none" />
     </div>
-
 
     <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
       {floatingIcons.map((item, idx) => {
@@ -57,10 +55,7 @@ const HeroSection = () => {
       })}
     </div>
 
-
     <div className="relative z-10 container mx-auto px-4 text-center text-cyan-50">
-
-
 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -70,7 +65,6 @@ const HeroSection = () => {
       >
         <TypingEffect />
       </motion.div>
-
 
       <motion.div
         initial={{ opacity: 0, y: 14 }}
@@ -92,7 +86,6 @@ const HeroSection = () => {
 
       </motion.div>
 
-
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -101,7 +94,6 @@ const HeroSection = () => {
       >
 
       </motion.div>
-
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -118,7 +110,6 @@ const HeroSection = () => {
           <Code2 className="w-5 h-5 text-cyan-300 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
           <span className="drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">Join the Ocean Hack</span>
         </a>
-
 
       </motion.div>
       <motion.div className="mb-5">
@@ -161,7 +152,6 @@ const HeroSection = () => {
         ))}
       </motion.div>
     </div>
-
 
   </section>);
 };

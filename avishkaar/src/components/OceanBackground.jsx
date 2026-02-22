@@ -22,8 +22,9 @@ const OceanBackground = () => {
             mountRef.current.appendChild(renderer.domElement);
         }
 
-        const particleCount = 32400; // 180 * 180 perfect square
-        const gridSize = 180;   
+        // [CHANGE HERE]: Wave particles density and grid shape
+        const particleCount = 25600;
+        const gridSize = 170;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -70,6 +71,7 @@ const OceanBackground = () => {
         context.fillRect(0, 0, 16, 16);
         const particleTexture = new THREE.CanvasTexture(texCanvas);
 
+        // [CHANGE HERE]: The size of the wave particles
         const material = new THREE.PointsMaterial({
             size: 0.4,
             vertexColors: true,
@@ -140,7 +142,6 @@ const OceanBackground = () => {
                     let iy = Math.floor(i / gridSize);
 
                     if (currentTemplate === 'wave') {
-                        // Wave targets are now dynamic, initialized here but updated in the loop
                         targets[i * 3] = (ix - gridSize / 2) * 1.0;
                         targets[i * 3 + 1] = 0;
                         targets[i * 3 + 2] = (iy - gridSize / 2) * 1.0;
@@ -149,18 +150,17 @@ const OceanBackground = () => {
                         targets[i * 3 + 1] = Math.random() * 100 + 50;
                         targets[i * 3 + 2] = (Math.random() - 0.5) * 100;
                     } else if (currentTemplate === 'globe') {
-                        const radius = 115;
+                        const radius = 170;
                         const phi = Math.acos(1 - (i + 0.5) / particleCount);
                         const theta = Math.PI * (1 + Math.sqrt(5)) * i;
 
                         targets[i * 3] = radius * Math.cos(theta) * Math.sin(phi);
-                        targets[i * 3 + 1] = radius * Math.cos(phi) - 90;
+                        targets[i * 3 + 1] = radius * Math.cos(phi) - 130;
                         targets[i * 3 + 2] = radius * Math.sin(theta) * Math.sin(phi);
                     }
                 }
             }
 
-            // Cinematic Sequence Controller
             const lerp = (a, b, t) => a + (b - a) * t;
             const cycleDuration = 32;
             const cycleTime = time % cycleDuration;
@@ -199,7 +199,7 @@ const OceanBackground = () => {
                 let pz = posAttr.array[i3 + 2];
 
                 if (currentTemplate === 'wave') {
-                    const spacing = 1.0; // tighter spacing for more particles
+                    const spacing = 1.0;
                     targets[i3] = (ix - gridSize / 2) * spacing;
                     targets[i3 + 2] = (iy - gridSize / 2) * spacing;
 
@@ -231,12 +231,14 @@ const OceanBackground = () => {
                     const dz = pz - mouse3D.z;
                     distToMouse = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-                    const repelRadius = 25;
+                    // [CHANGE HERE]: Wave Mouse Interaction - Radius of effect
+                    const repelRadius = 40;
                     if (distToMouse < repelRadius) {
                         const force = (repelRadius - distToMouse) / repelRadius;
-                        tx += (dx / distToMouse) * force * 15;
-                        ty += (dy / distToMouse) * force * 15;
-                        tz += (dz / distToMouse) * force * 15;
+                        // [CHANGE HERE]: Wave Mouse Interaction - Push force
+                        tx += (dx / distToMouse) * force * 30;
+                        ty += (dy / distToMouse) * force * 30;
+                        tz += (dz / distToMouse) * force * 30;
                     }
                 }
 
@@ -321,7 +323,7 @@ const OceanBackground = () => {
     return (
         <div className="absolute inset-0 z-0 overflow-hidden w-full h-full bg-slate-950">
             <div ref={mountRef} className="absolute inset-0" />
-            <div className="absolute bottom-6 right-6 z-50 flex gap-3 pointer-events-auto">
+            <div className="absolute bottom-2 right-4 md:bottom-3 md:right-6 z-50 flex gap-2 md:gap-3 pointer-events-auto">
                 {['globe', 'wave', 'rain'].map((btn) => (
                     <button
                         key={btn}

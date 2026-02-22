@@ -10,7 +10,6 @@ const ReadableParticleLoader = () => {
     useEffect(() => {
         let animationFrameId;
 
-        // --- 1. Scene Setup ---
         const container = mountRef.current;
         if (!container) return;
 
@@ -18,15 +17,13 @@ const ReadableParticleLoader = () => {
         scene.fog = new THREE.FogExp2(0x020617, 0.005);
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.set(0, -15, 100); // Shift camera down to move the text up visually
+        camera.position.set(0, -15, 100);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        // Keep it responsive but bounded to container if needed (using window size for full screen like HTML)
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
 
-        // --- 2. Global Variables ---
         let particles;
         const particleCount = 35000;
         let positions, colors, targets, velocities;
@@ -34,7 +31,6 @@ const ReadableParticleLoader = () => {
         const colorActive = new THREE.Color(0x22d3ee);
         const clock = new THREE.Clock();
 
-        // --- 3. Mouse Interaction Setup ---
         const mouse = new THREE.Vector2();
         const raycaster = new THREE.Raycaster();
         const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -54,7 +50,6 @@ const ReadableParticleLoader = () => {
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseout', onMouseOut);
 
-        // Circular dot texture
         const texCanvas = document.createElement('canvas');
         texCanvas.width = 16;
         texCanvas.height = 16;
@@ -66,7 +61,6 @@ const ReadableParticleLoader = () => {
         context.fillRect(0, 0, 16, 16);
         const particleTexture = new THREE.CanvasTexture(texCanvas);
 
-        // --- 4. Load Font & Sample Surface ---
         const loader = new FontLoader();
         loader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', function (font) {
             const textGeo = new TextGeometry('AVISHKAAR', {
@@ -80,14 +74,11 @@ const ReadableParticleLoader = () => {
                 bevelSegments: 2
             });
 
-            // Center the text perfectly
             textGeo.computeBoundingBox();
             textGeo.center();
 
-            // Create a temporary mesh to sample from
             const textMesh = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial());
 
-            // The Sampler: This magically spreads particles evenly across the surface of the word
             const sampler = new MeshSurfaceSampler(textMesh).build();
 
             const geometry = new THREE.BufferGeometry();
@@ -99,14 +90,12 @@ const ReadableParticleLoader = () => {
             const tempPosition = new THREE.Vector3();
 
             for (let i = 0; i < particleCount; i++) {
-                // Get a random, evenly distributed point on the surface of the text
                 sampler.sample(tempPosition);
 
                 targets[i * 3] = tempPosition.x;
                 targets[i * 3 + 1] = tempPosition.y;
                 targets[i * 3 + 2] = tempPosition.z;
 
-                // Scatter them slightly so they fly in on load without too much bounce
                 positions[i * 3] = (Math.random() - 0.5) * 100;
                 positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
                 positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
@@ -120,7 +109,7 @@ const ReadableParticleLoader = () => {
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
             const material = new THREE.PointsMaterial({
-                size: 0.5, // Made dots slightly smaller for crisper text resolution
+                size: 0.5,
                 vertexColors: true,
                 map: particleTexture,
                 transparent: true,
@@ -132,7 +121,6 @@ const ReadableParticleLoader = () => {
             scene.add(particles);
         });
 
-        // --- 5. Animation Loop ---
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
@@ -152,11 +140,9 @@ const ReadableParticleLoader = () => {
                     let ty = targets[i3 + 1];
                     let tz = targets[i3 + 2];
 
-                    // Subtle continuous floating wave (turned down so text stays highly readable)
-                    ty += Math.sin(tx * 0.1 + time * 1.5) * 0.5;
-                    tz += Math.cos(tx * 0.1 + time * 1.5) * 0.5;
+                    ty += Math.sin(tx * 0.1 + time * 1.5) * 1.5;
+                    tz += Math.cos(tx * 0.1 + time * 1.5) * 1.5;
 
-                    // Mouse Interaction
                     let distToMouse = 999;
                     if (isMouseActive) {
                         const dx = px - mouse3D.x;
@@ -173,7 +159,6 @@ const ReadableParticleLoader = () => {
                         }
                     }
 
-                    // Physics Math
                     velocities[i3] += (tx - px) * 0.04;
                     velocities[i3 + 1] += (ty - py) * 0.04;
                     velocities[i3 + 2] += (tz - pz) * 0.04;
@@ -186,7 +171,6 @@ const ReadableParticleLoader = () => {
                     posAttr.array[i3 + 1] += velocities[i3 + 1];
                     posAttr.array[i3 + 2] += velocities[i3 + 2];
 
-                    // Color updates
                     let currentColor = new THREE.Color(colAttr.array[i3], colAttr.array[i3 + 1], colAttr.array[i3 + 2]);
                     let targetColor = distToMouse < 20 ? colorActive : colorBase;
 
@@ -212,7 +196,6 @@ const ReadableParticleLoader = () => {
         };
         window.addEventListener('resize', handleResize);
 
-        // Cleanup
         return () => {
             cancelAnimationFrame(animationFrameId);
             window.removeEventListener('mousemove', onMouseMove);
