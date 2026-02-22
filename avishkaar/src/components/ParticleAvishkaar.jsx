@@ -31,7 +31,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         container.appendChild(renderer.domElement);
 
         let particles;
-        const particleCount = 45000; // Increased massively for extreme density on big text
+        const particleCount = 30000; // Increased massively for extreme density on big text
         let positions, colors, targets, velocities;
         const colorBase = new THREE.Color(0xd0f8ff); // Extremely bright cyan-white
         const colorActive = new THREE.Color(0xffffff); // Pure white for impact
@@ -57,8 +57,8 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         container.addEventListener('mouseleave', onMouseOut);
 
         const texCanvas = document.createElement('canvas');
-        texCanvas.width = 16;
-        texCanvas.height = 16;
+        texCanvas.width = 20;
+        texCanvas.height = 20;
         const context = texCanvas.getContext('2d');
         const gradient = context.createRadialGradient(8, 8, 0, 8, 8, 8);
         gradient.addColorStop(0, 'rgba(52, 195, 200, 1)'); // Pure white core for maximum brightness
@@ -89,7 +89,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const material = new THREE.PointsMaterial({
-            size: 1.5, // Increased size for even more luminous presence
+            size: 2.5, // Increased size for even more luminous presence
             vertexColors: true,
             map: particleTexture,
             transparent: true,
@@ -130,7 +130,11 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
             ctx2d.font = `900 ${fontSize}px "Outfit", "Inter", sans-serif`;
             ctx2d.textAlign = 'center';
             ctx2d.textBaseline = 'middle';
+            ctx2d.lineJoin = 'round';
+            ctx2d.lineWidth = isMobile ? 12 : 24; // Thicker outline for text
+            ctx2d.strokeStyle = '#FFFFFF';
             // Adjusted slightly up to ensure perfect visual center
+            ctx2d.strokeText(newTextStr, canvas2d.width / 2, canvas2d.height / 2);
             ctx2d.fillText(newTextStr, canvas2d.width / 2, canvas2d.height / 2);
 
             const imageData = ctx2d.getImageData(0, 0, canvas2d.width, canvas2d.height).data;

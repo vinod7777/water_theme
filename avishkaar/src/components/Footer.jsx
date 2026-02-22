@@ -68,7 +68,7 @@ const Footer = () => {
     <div className="border-t border-primary/10 bg-card/50">
       <div className="container mx-auto px-4 py-4">
         <p className="text-center text-sm text-muted-foreground">
-          Copyrights © 2025 Designed and developed by{' '}
+          Copyrights © 2026 Designed and developed by{' '}
           <span className="text-primary">S</span> .{' '}
           <span className="text-primary">Vinod kumar</span> and{' '}
           <span className="text-primary">Vinod kumar</span> From{' '}

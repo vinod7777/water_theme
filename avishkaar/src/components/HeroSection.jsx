@@ -66,7 +66,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, delay: 0.1, type: "spring" }}
-        className="mb-4 w-full -mb-8 h-[110px] md:h-[220px] flex flex-col items-center justify-center"
+        className="mb-4 w-full h-[150px] md:h-[250px] flex flex-col items-center justify-center relative"
       >
         <TypingEffect />
       </motion.div>

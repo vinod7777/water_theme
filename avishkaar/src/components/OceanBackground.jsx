@@ -22,12 +22,27 @@ const OceanBackground = () => {
             mountRef.current.appendChild(renderer.domElement);
         }
 
-        const particleCount = 15000;
+        const particleCount = 32400; // 180 * 180 perfect square
+        const gridSize = 180;   
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
         const targets = new Float32Array(particleCount * 3);
         const velocities = new Float32Array(particleCount * 3);
+
+        const indices = [];
+        for (let iy = 0; iy < gridSize - 1; iy++) {
+            for (let ix = 0; ix < gridSize - 1; ix++) {
+                const a = ix + iy * gridSize;
+                const b = (ix + 1) + iy * gridSize;
+                const c = ix + (iy + 1) * gridSize;
+                const d = (ix + 1) + (iy + 1) * gridSize;
+
+                indices.push(a, b, d);
+                indices.push(a, d, c);
+            }
+        }
+        geometry.setIndex(indices);
 
         const colorBase = new THREE.Color();
         const colorActive = new THREE.Color(0x22d3ee);
@@ -56,7 +71,7 @@ const OceanBackground = () => {
         const particleTexture = new THREE.CanvasTexture(texCanvas);
 
         const material = new THREE.PointsMaterial({
-            size: 1.0,
+            size: 0.4,
             vertexColors: true,
             map: particleTexture,
             transparent: true,
@@ -64,8 +79,18 @@ const OceanBackground = () => {
             depthWrite: false,
         });
 
+        const waterMat = new THREE.MeshBasicMaterial({
+            color: 0x032b43,
+            transparent: true,
+            opacity: 0,
+            wireframe: true,
+            blending: THREE.AdditiveBlending
+        });
+
         const particles = new THREE.Points(geometry, material);
+        const waterMesh = new THREE.Mesh(geometry, waterMat);
         scene.add(particles);
+        scene.add(waterMesh);
 
         const mouse = new THREE.Vector2();
         const raycaster = new THREE.Raycaster();
@@ -86,16 +111,27 @@ const OceanBackground = () => {
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseout', onMouseOut);
 
-        const gridSize = Math.ceil(Math.sqrt(particleCount));
-        let lastTemplate = '';
-
         const clock = new THREE.Clock();
+        let lastTemplate = '';
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
 
             const currentTemplate = templateRef.current;
+
+            if (currentTemplate === 'wave') {
+                camera.position.lerp(new THREE.Vector3(0, 15, 30), 0.02);
+                waterMat.opacity = THREE.MathUtils.lerp(waterMat.opacity, 0.4, 0.05);
+            } else if (currentTemplate === 'rain') {
+                camera.position.lerp(new THREE.Vector3(0, 30, 80), 0.02);
+                waterMat.opacity = THREE.MathUtils.lerp(waterMat.opacity, 0, 0.1);
+            } else if (currentTemplate === 'globe') {
+                camera.position.lerp(new THREE.Vector3(0, 20, 150), 0.02);
+                waterMat.opacity = THREE.MathUtils.lerp(waterMat.opacity, 0, 0.1);
+            }
+            camera.lookAt(0, 0, 0);
+            waterMesh.visible = waterMat.opacity > 0.01;
 
             if (currentTemplate !== lastTemplate) {
                 lastTemplate = currentTemplate;
@@ -104,9 +140,10 @@ const OceanBackground = () => {
                     let iy = Math.floor(i / gridSize);
 
                     if (currentTemplate === 'wave') {
-                        targets[i * 3] = (ix - gridSize / 2) * 1.5;
+                        // Wave targets are now dynamic, initialized here but updated in the loop
+                        targets[i * 3] = (ix - gridSize / 2) * 1.0;
                         targets[i * 3 + 1] = 0;
-                        targets[i * 3 + 2] = (iy - gridSize / 2) * 1.5;
+                        targets[i * 3 + 2] = (iy - gridSize / 2) * 1.0;
                     } else if (currentTemplate === 'rain') {
                         targets[i * 3] = (Math.random() - 0.5) * 200;
                         targets[i * 3 + 1] = Math.random() * 100 + 50;
@@ -123,19 +160,57 @@ const OceanBackground = () => {
                 }
             }
 
+            // Cinematic Sequence Controller
+            const lerp = (a, b, t) => a + (b - a) * t;
+            const cycleDuration = 32;
+            const cycleTime = time % cycleDuration;
+            const kf = [
+                { time: 0, amp: 3.5, freq: 0.12, scale: 1.5, tm: -1.2, comp: 0, fog: 0.002 },
+                { time: 8, amp: 3.5, freq: 0.12, scale: 1.5, tm: -1.2, comp: 0, fog: 0.002 },
+                { time: 13, amp: 1.5, freq: 0.20, scale: 1.1, tm: -0.6, comp: 0, fog: 0.003 },
+                { time: 19, amp: 0.6, freq: 0.04, scale: 5.5, tm: 0.2, comp: 0, fog: 0.0015 },
+                { time: 26, amp: 6.5, freq: 0.16, scale: 2.2, tm: 1.5, comp: 1, fog: 0.0025 },
+                { time: 32, amp: 3.5, freq: 0.12, scale: 1.5, tm: -1.2, comp: 0, fog: 0.002 }
+            ];
+            let k = 0;
+            while (k < kf.length - 1 && cycleTime > kf[k + 1].time) k++;
+            const segT = (cycleTime - kf[k].time) / (kf[k + 1].time - kf[k].time);
+            const easeT = segT * segT * (3 - 2 * segT);
+            const cinematic = {
+                amp: lerp(kf[k].amp, kf[k + 1].amp, easeT),
+                freq: lerp(kf[k].freq, kf[k + 1].freq, easeT),
+                scale: lerp(kf[k].scale, kf[k + 1].scale, easeT),
+                tm: lerp(kf[k].tm, kf[k + 1].tm, easeT),
+                comp: lerp(kf[k].comp, kf[k + 1].comp, easeT),
+                fog: lerp(kf[k].fog, kf[k + 1].fog, easeT)
+            };
+            scene.fog.density = cinematic.fog;
+
             const posAttr = geometry.attributes.position;
             const colAttr = geometry.attributes.color;
 
             for (let i = 0; i < particleCount; i++) {
                 const i3 = i * 3;
+                let ix = i % gridSize;
+                let iy = Math.floor(i / gridSize);
 
                 let px = posAttr.array[i3];
                 let py = posAttr.array[i3 + 1];
                 let pz = posAttr.array[i3 + 2];
 
                 if (currentTemplate === 'wave') {
-                    targets[i3 + 1] =
-                        Math.sin(targets[i3] * 0.15 + time) * 3 + Math.cos(targets[i3 + 2] * 0.15 + time) * 3;
+                    const spacing = 1.0; // tighter spacing for more particles
+                    targets[i3] = (ix - gridSize / 2) * spacing;
+                    targets[i3 + 2] = (iy - gridSize / 2) * spacing;
+
+                    const x = targets[i3];
+                    const z = targets[i3 + 2];
+
+                    const wave1 = Math.sin(x * 0.1 + time * 1.5) * 2.5;
+                    const wave2 = Math.cos(z * 0.1 - time * 1.5) * 2.5;
+                    const wave3 = Math.sin((x + z) * 0.05 + time) * 1.5;
+
+                    targets[i3 + 1] = wave1 + wave2 + wave3;
                 } else if (currentTemplate === 'rain') {
                     targets[i3 + 1] -= 0.6 + (i % 3) * 0.2;
                     targets[i3] += Math.sin(time * 0.5 + i) * 0.03;
@@ -184,7 +259,9 @@ const OceanBackground = () => {
                     targetColor = colorActive;
                 } else {
                     if (currentTemplate === 'wave') {
-                        targetColor.setHSL(0.55 + Math.sin(px * 0.05 + time) * 0.05, 0.9, 0.4);
+                        const hue = 0.55 + Math.sin(px * 0.02 + time * 0.1) * 0.02 + cinematic.comp * 0.04;
+                        const lum = 0.3 + (cinematic.amp * 0.03) + (Math.sin(pz * 0.01 + time) * 0.05);
+                        targetColor.setHSL(hue, 0.9, Math.min(lum, 0.6));
                     } else if (currentTemplate === 'rain') {
                         targetColor.setHSL(0.5, 0.8, 0.3);
                     } else if (currentTemplate === 'globe') {
@@ -202,8 +279,8 @@ const OceanBackground = () => {
             colAttr.needsUpdate = true;
 
             if (currentTemplate === 'wave') {
-                scene.rotation.y = Math.sin(time * 0.2) * 0.2;
-                scene.rotation.x = Math.cos(time * 0.1) * 0.1;
+                scene.rotation.y = THREE.MathUtils.lerp(scene.rotation.y, 0, 0.05);
+                scene.rotation.x = THREE.MathUtils.lerp(scene.rotation.x, 0, 0.05);
             } else if (currentTemplate === 'globe') {
                 scene.rotation.y = time * 0.05;
                 scene.rotation.x = 0;

@@ -50,7 +50,7 @@ const Navbar = () => {
     { name: 'Team', to: '/team' },
     { name: 'Tracks', to: '/tracks' },
   ];
-  return (<div class="overflow-hidden">
+  return (<div className="overflow-hidden">
 
     <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
       ? 'bg-background/95 backdrop-blur-lg border-b border-primary/20'
@@ -120,11 +120,11 @@ const Navbar = () => {
             <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} transition={{ duration: 0.4, delay: 0.2 }} className="flex flex-col justify-center">
               <div className="bg-card/50 border border-primary/20 rounded-2xl p-6 md:p-8">
 
-        
-                  <h2 className="text-2xl md:text-3xl font-display font-bold text-gradient-water mb-4">
-                    Avishkaar Season 4
-                  </h2>
-              
+
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-gradient-water mb-4">
+                  Avishkaar Season 4
+                </h2>
+
 
 
                 <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-6">
@@ -157,11 +157,11 @@ const Navbar = () => {
 
 
                 <div className="space-y-4">
-               
-                    <h3 className="text-lg font-display font-bold text-foreground">
-                      Contact Us
-                    </h3>
-                  
+
+                  <h3 className="text-lg font-display font-bold text-foreground">
+                    Contact Us
+                  </h3>
+
                   <a href="tel:+917386759626" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
                     <Phone className="w-4 h-4 text-primary" />
                     <span className="text-sm">   </span>
