@@ -53,7 +53,7 @@ const Bubbles = () => {
             size: Math.random() * 8 + 4,
             left: Math.random() * 100,
             duration: Math.random() * 5 + 8,
-            delay: Math.random() * -10, // negative delay so they start seamlessly
+            delay: Math.random() * -10,
         }));
     }, []);
 
@@ -103,7 +103,6 @@ const LightRays = () => {
 // Global CSS Overrides and Keyframes injected into head
 const GlobalOceanStyles = () => (
     <style>{`
-        /* Make sure the main backgrounds are transparent so we see the dive! */
         body {
             background-color: #000814 !important;
         }
@@ -115,22 +114,16 @@ const GlobalOceanStyles = () => (
             background-color: transparent !important;
             background-image: none !important;
         }
-        
-        /* Add glassmorphism to opaque cards so they look like they are floating underwater */
         .bg-card {
             background-color: rgba(3, 43, 67, 0.3) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
-        
-        /* Optional: Dim down the Threejs Canvas in Hero so we can clearly see the fish */
         #hero-section canvas {
             opacity: 0.5;
             mix-blend-mode: screen;
         }
 
-        /* ---------------- Animations ---------------- */
-        
         @keyframes bubbleFloat {
             0% { transform: translateY(100px) scale(0.8); opacity: 0; }
             10% { opacity: 1; }
@@ -165,13 +158,16 @@ const GlobalOceanStyles = () => (
             0% { transform: rotate(2deg) scaleX(-1); opacity: 0.4; }
             100% { transform: rotate(-4deg) scaleX(-1); opacity: 0.8; }
         }
+        @keyframes sandShimmer {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
     `}</style>
 );
 
 const ScrollDepthMeter = () => {
     const { scrollYProgress } = useScroll();
 
-    // Map 0-1 to 0 - 11000 meters
     const depthNumber = useTransform(scrollYProgress, [0, 1], [0, 10994]);
     const depthText = useTransform(depthNumber, (val) => Math.floor(val).toLocaleString() + 'm');
     const markerHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
@@ -200,7 +196,6 @@ const DeepOceanWrapper = ({ children }) => {
         <div
             className="relative min-h-screen overflow-hidden"
             style={{
-                // Static gradient spans the entire height of the document naturally. Zero JS lag.
                 background: 'linear-gradient(180deg, #020617 0%, #032b43 25%, #011627 60%, #000814 85%, #000000 100%)'
             }}
         >
@@ -210,7 +205,6 @@ const DeepOceanWrapper = ({ children }) => {
             <Bubbles />
 
             {/* Scroll-based elements - Absolute positioned throughout the page depth */}
-            {/* z-[5] puts them behind the glass cards (z-15) but visible since section solid backgrounds are removed */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-[5]">
 
                 {/* Surface level / Shallow - Small Fish */}
@@ -258,6 +252,7 @@ const DeepOceanWrapper = ({ children }) => {
                 </div>
             </div>
 
+            {/* Main content (sections + footer) */}
             <div className="relative z-[15]">
                 {children}
             </div>
