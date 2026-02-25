@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
+import { useRef } from "react";
 import { Code, Lightbulb, Trophy, Users } from "lucide-react";
-import WaveDivider from "./WaveDivider";
+import FloatingParticles from "./FloatingParticles";
 const features = [
   {
     icon: Code,
@@ -24,18 +25,12 @@ const features = [
   },
 ];
 const AboutSection = () => {
-  return (<section className="relative py-20 md:py-32 overflow-hidden water-bg-effect" id="about">
-
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <WaveDivider variant="top" />
-
-
+  return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="about">
+    <FloatingParticles />
     <div className="relative z-10 container mx-auto px-4">
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-4">
-        <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-water tracking-wide">
+        <h2 className="text-3xl md:text-5xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] tracking-wide">
           ABOUT AVISHKAAR
         </h2>
       </motion.div>

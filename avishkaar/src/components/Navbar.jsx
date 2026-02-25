@@ -34,12 +34,15 @@ const Navbar = () => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('nav-open');
     }
     else {
       document.body.style.overflow = 'auto';
+      document.body.classList.remove('nav-open');
     }
     return () => {
       document.body.style.overflow = 'auto';
+      document.body.classList.remove('nav-open');
     };
   }, [isOpen]);
   const navItems = [
@@ -51,6 +54,14 @@ const Navbar = () => {
     { name: 'Tracks', to: '/tracks' },
   ];
   return (<div className="overflow-hidden">
+   {isOpen && (
+      <style>{`
+        body.nav-open section,
+        body.nav-open footer {
+          visibility: hidden;
+        }
+      `}</style>
+    )}
 
     <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
       ? 'bg-background/95 backdrop-blur-lg border-b border-primary/20'

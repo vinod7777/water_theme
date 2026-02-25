@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, animate, useScroll, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate, useScroll, useSpring, useInView } from "framer-motion";
 import { Laptop, Users, Trophy, Medal, Award, Star, ArrowRight, Clock } from "lucide-react";
-import WaveDivider from "./WaveDivider";
 import WaterTextEffect from "./WaterTextEffect";
+import FloatingParticles from "./FloatingParticles";
 function AnimatedNumber({ value, delay = 0 }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest).toLocaleString());
@@ -112,7 +112,7 @@ const LargeCountdownTimer = ({ type }) => {
         <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity }}>
           <Clock className="w-8 h-8 text-primary" />
         </motion.div>
-        <h3 className="text-2xl md:text-4xl font-display font-black text-gradient-water">
+        <h3 className="text-2xl md:text-4xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
           {type === 'virtual' ? 'Virtual Hackathon' : 'Physical Hackathon'} Starts In
         </h3>
       </div>
@@ -563,9 +563,6 @@ const Timeline = ({ type }) => {
     <TimelineCursor containerRef={timelineRef} />
 
 
-    <ParallaxWaves containerRef={timelineRef} />
-
-
     <div className="absolute inset-0 pointer-events-none">
       <motion.div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[800px] rounded-full blur-3xl" style={{ background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.08), hsl(220, 85%, 40% / 0.05), transparent)' }} animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }} transition={{ duration: 6, repeat: Infinity }} />
 
@@ -594,13 +591,8 @@ const Timeline = ({ type }) => {
         backdropFilter: 'blur(20px)',
         boxShadow: '0 12px 40px hsl(220, 85%, 10% / 0.3), inset 0 1px 0 rgba(255,255,255,0.06)',
       }}>
-        <h3 className="text-3xl md:text-5xl font-display font-black" style={{
-          background: 'linear-gradient(135deg, hsl(175, 100%, 55%), hsl(195, 100%, 65%), hsl(220, 85%, 70%))',
-          backgroundClip: 'text',
-          WebkitBackgroundClip: 'text',
-          color: 'transparent',
-        }}>
-          💧 {type === 'virtual' ? 'Virtual' : 'Physical'} Timeline 💧
+        <h3 className="text-3xl md:text-5xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
+          {type === 'virtual' ? 'Virtual' : 'Physical'} Timeline
         </h3>
       </div>
 
@@ -655,7 +647,7 @@ const PrizePoolDisplay = ({ type }) => {
         <span className="text-sm font-display uppercase tracking-widest text-muted-foreground">Prize Pool</span>
         <Star className="w-5 h-5 text-primary" />
       </div>
-      <motion.h3 className="text-4xl md:text-5xl font-display font-black text-gradient-water" animate={{
+      <motion.h3 className="text-4xl md:text-5xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]" animate={{
         textShadow: [
           "0 0 20px hsl(var(--primary) / 0.5)",
           "0 0 40px hsl(var(--primary) / 0.8)",
@@ -724,7 +716,7 @@ const ImportantDates = ({ type }) => {
   return (<div className="py-12">
 
     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
-      <h3 className="text-3xl md:text-4xl font-display font-black text-gradient-water italic">
+      <h3 className="text-3xl md:text-4xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] italic">
         Important Dates
       </h3>
     </motion.div>
@@ -841,30 +833,12 @@ const HackathonSection = () => {
     { id: 'virtual', label: 'Virtual Hackathon', icon: Laptop },
     { id: 'physical', label: 'Physical Hackathon', icon: Users },
   ];
-  return (<section className="relative py-20 md:py-32 overflow-hidden water-bg-effect" id="hackathon">
 
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <div className="absolute inset-0 overflow-hidden">
-      {[...Array(15)].map((_, i) => (<motion.div key={i} className="absolute w-2 h-2 bg-primary/20 rounded-full" style={{
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-      }} animate={{
-        y: [0, -50, 0],
-        opacity: [0.1, 0.5, 0.1],
-        scale: [1, 2, 1],
-      }} transition={{
-        duration: 4 + Math.random() * 3,
-        repeat: Infinity,
-        delay: Math.random() * 3,
-      }} />))}
-    </div>
-    <WaveDivider variant="top" />
-    <div className="relative z-10 container mx-auto px-4">
+  return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="hackathon">
+    <FloatingParticles count={50} />      <div className="relative z-10 container mx-auto px-4">
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-4">
-        <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-water">
+        <h2 className="text-3xl md:text-5xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
           Choose Your Battleground
         </h2>
       </motion.div>

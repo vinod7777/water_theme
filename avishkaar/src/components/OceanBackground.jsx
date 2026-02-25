@@ -17,14 +17,14 @@ const OceanBackground = () => {
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
         if (mountRef.current) {
             mountRef.current.appendChild(renderer.domElement);
         }
 
         // [CHANGE HERE]: Wave particles density and grid shape
         const particleCount = 25600;
-        const gridSize = 170;
+        const gridSize = 160;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -118,6 +118,7 @@ const OceanBackground = () => {
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
+            if (document.body.classList.contains('nav-open')) return;
             const time = clock.getElapsedTime();
 
             const currentTemplate = templateRef.current;
@@ -125,9 +126,6 @@ const OceanBackground = () => {
             if (currentTemplate === 'wave') {
                 camera.position.lerp(new THREE.Vector3(0, 15, 30), 0.02);
                 waterMat.opacity = THREE.MathUtils.lerp(waterMat.opacity, 0.4, 0.05);
-            } else if (currentTemplate === 'rain') {
-                camera.position.lerp(new THREE.Vector3(0, 30, 80), 0.02);
-                waterMat.opacity = THREE.MathUtils.lerp(waterMat.opacity, 0, 0.1);
             } else if (currentTemplate === 'globe') {
                 camera.position.lerp(new THREE.Vector3(0, 20, 150), 0.02);
                 waterMat.opacity = THREE.MathUtils.lerp(waterMat.opacity, 0, 0.1);
@@ -145,10 +143,6 @@ const OceanBackground = () => {
                         targets[i * 3] = (ix - gridSize / 2) * 1.0;
                         targets[i * 3 + 1] = 0;
                         targets[i * 3 + 2] = (iy - gridSize / 2) * 1.0;
-                    } else if (currentTemplate === 'rain') {
-                        targets[i * 3] = (Math.random() - 0.5) * 200;
-                        targets[i * 3 + 1] = Math.random() * 100 + 50;
-                        targets[i * 3 + 2] = (Math.random() - 0.5) * 100;
                     } else if (currentTemplate === 'globe') {
                         const radius = 170;
                         const phi = Math.acos(1 - (i + 0.5) / particleCount);
@@ -211,13 +205,6 @@ const OceanBackground = () => {
                     const wave3 = Math.sin((x + z) * 0.05 + time) * 1.5;
 
                     targets[i3 + 1] = wave1 + wave2 + wave3;
-                } else if (currentTemplate === 'rain') {
-                    targets[i3 + 1] -= 0.6 + (i % 3) * 0.2;
-                    targets[i3] += Math.sin(time * 0.5 + i) * 0.03;
-                    if (targets[i3 + 1] < -40) {
-                        targets[i3 + 1] = 80;
-                        targets[i3] = (Math.random() - 0.5) * 200;
-                    }
                 }
 
                 let tx = targets[i3];
@@ -264,8 +251,6 @@ const OceanBackground = () => {
                         const hue = 0.55 + Math.sin(px * 0.02 + time * 0.1) * 0.02 + cinematic.comp * 0.04;
                         const lum = 0.3 + (cinematic.amp * 0.03) + (Math.sin(pz * 0.01 + time) * 0.05);
                         targetColor.setHSL(hue, 0.9, Math.min(lum, 0.6));
-                    } else if (currentTemplate === 'rain') {
-                        targetColor.setHSL(0.5, 0.8, 0.3);
                     } else if (currentTemplate === 'globe') {
                         targetColor.setHex(0x0ea5e9);
                     }
@@ -286,8 +271,6 @@ const OceanBackground = () => {
             } else if (currentTemplate === 'globe') {
                 scene.rotation.y = time * 0.05;
                 scene.rotation.x = 0;
-            } else {
-                scene.rotation.set(0, 0, 0);
             }
 
             renderer.render(scene, camera);
@@ -324,7 +307,7 @@ const OceanBackground = () => {
         <div className="absolute inset-0 z-0 overflow-hidden w-full h-full bg-slate-950">
             <div ref={mountRef} className="absolute inset-0" />
             <div className="absolute bottom-2 right-4 md:bottom-3 md:right-6 z-50 flex gap-2 md:gap-3 pointer-events-auto">
-                {['globe', 'wave', 'rain'].map((btn) => (
+                {['globe', 'wave'].map((btn) => (
                     <button
                         key={btn}
                         onClick={() => changeTemplate(btn)}

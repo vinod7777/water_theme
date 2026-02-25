@@ -1,18 +1,15 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import { Droplets } from "lucide-react";
 import TypingEffect from "./TypingEffect";
-import WaveDivider from "./WaveDivider";
 import WaterTextEffect from "./WaterTextEffect";
+import FloatingParticles from "./FloatingParticles";
 const WelcomeSection = () => {
-  return (<section className="relative py-24 md:py-32 overflow-hidden water-bg-effect" id="welcome">
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <WaveDivider variant="top" />
-    <WaveDivider variant="bottom" />
-
-
+  return (<section ref={ref} className="relative py-24 md:py-32 overflow-hidden min-h-[50vh]" id="welcome">
+    <FloatingParticles count={40} />
     <motion.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.15), transparent 60%)',
     }} animate={{
@@ -20,29 +17,10 @@ const WelcomeSection = () => {
       opacity: [0.3, 0.5, 0.3],
     }} transition={{ duration: 6, repeat: Infinity }} />
 
-
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(15)].map((_, i) => (<motion.div key={i} className="absolute w-2 h-2 rounded-full" style={{
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        background: `hsl(${195 + Math.random() * 20}, 100%, ${50 + Math.random() * 15}%)`,
-        boxShadow: `0 0 ${4 + Math.random() * 4}px hsl(195, 100%, 50%)`,
-      }} animate={{
-        y: [0, -80, -160],
-        x: [0, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 60],
-        opacity: [0, 1, 0],
-        scale: [0.5, 1, 0.5],
-      }} transition={{
-        duration: 4 + Math.random() * 2,
-        repeat: Infinity,
-        delay: i * 0.3,
-      }} />))}
-    </div>
-
     <div className="container mx-auto px-4 relative z-10">
 
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center mb-8">
-        <motion.h2 className="text-3xl md:text-5xl font-display font-black italic mb-4 text-gradient-water">
+        <motion.h2 className="text-3xl md:text-5xl font-display font-black italic mb-4 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
           Welcome to
         </motion.h2>
       </motion.div>

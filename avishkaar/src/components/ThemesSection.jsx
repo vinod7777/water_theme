@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
+import { useRef } from "react";
 import { Users, Bus, Leaf, Heart, Recycle, Zap, Plane, Lightbulb } from "lucide-react";
-import WaveDivider from "./WaveDivider";
 import WaterTextEffect from "./WaterTextEffect";
+import FloatingParticles from "./FloatingParticles";
 const themes = [
   {
     icon: Users,
@@ -61,33 +62,11 @@ const themes = [
   },
 ];
 const ThemesSection = () => {
-  return (<section className="relative py-20 md:py-32 overflow-hidden water-bg-effect" id="themes">
-
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <WaveDivider variant="top" />
-
-
-    <div className="absolute inset-0 overflow-hidden">
-      {[...Array(20)].map((_, i) => (<motion.div key={i} className="absolute w-1 h-1 bg-primary/30 rounded-full" style={{
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-      }} animate={{
-        y: [0, -30, 0],
-        opacity: [0.2, 0.8, 0.2],
-        scale: [1, 1.5, 1],
-      }} transition={{
-        duration: 3 + Math.random() * 2,
-        repeat: Infinity,
-        delay: Math.random() * 2,
-      }} />))}
-    </div>
-
-    <div className="relative z-10 container mx-auto px-4">
+  return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="themes">
+    <FloatingParticles />      <div className="relative z-10 container mx-auto px-4">
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-4">
-        <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-water tracking-wide">
+        <h2 className="text-3xl md:text-5xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] tracking-wide">
           Themes Breakdown – What Problems You Can Solve?
         </h2>
       </motion.div>

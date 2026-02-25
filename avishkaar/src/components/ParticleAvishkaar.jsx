@@ -26,7 +26,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
         container.appendChild(renderer.domElement);
 
         let particles;
@@ -178,6 +178,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
+            if (document.body.classList.contains('nav-open')) return;
             const time = clock.getElapsedTime();
 
             if (textRef.current !== lastText) {

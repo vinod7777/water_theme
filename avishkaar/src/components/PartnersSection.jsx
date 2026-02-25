@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import { Droplets } from "lucide-react";
-import WaveDivider from "./WaveDivider";
+import FloatingParticles from "./FloatingParticles";
 const allPartners = [
   { name: "GDG", initials: "GDG", type: "Outreach Partner" },
   { name: "GFG", initials: "GFG", type: "Outreach Partner" },
@@ -21,35 +20,14 @@ const groupedPartners = allPartners.reduce((acc, partner) => {
 const PartnersSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  return (<section ref={ref} className="relative py-24 overflow-hidden water-bg-effect" id="partners">
+  return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="partners">
 
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <WaveDivider variant="top" />
-
-
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(10)].map((_, i) => (<motion.div key={i} className="absolute w-2 h-2 rounded-full" style={{
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        background: 'hsl(195, 100%, 50%)',
-        boxShadow: '0 0 6px hsl(195, 100%, 50%)',
-      }} animate={{
-        y: [0, -100, -200],
-        opacity: [0, 1, 0],
-        scale: [0, 1, 0],
-      }} transition={{
-        duration: 4,
-        repeat: Infinity,
-        delay: i * 0.5,
-      }} />))}
-    </div>
+    <FloatingParticles count={40} />
 
     <div className="container mx-auto px-4 relative z-10">
 
       <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} className="text-center mb-16">
-        <motion.h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-water">
+        <motion.h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
           OUR PARTNERS
         </motion.h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -65,7 +43,7 @@ const PartnersSection = () => {
       <div className="flex flex-wrap justify-center gap-12 max-w-6xl mx-auto">
         {Object.entries(groupedPartners).map(([type, partners], catIndex) => (<motion.div key={type} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: catIndex * 0.15 }} className="text-center">
 
-          <motion.h3 className="text-xl md:text-2xl font-display font-bold mb-6 text-gradient-water">
+          <motion.h3 className="text-xl md:text-2xl font-display font-bold mb-6 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
             {type}
           </motion.h3>
 

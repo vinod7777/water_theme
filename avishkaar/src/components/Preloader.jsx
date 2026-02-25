@@ -18,7 +18,7 @@ const ThreeOceanPreloader = ({ progress, isExiting }) => {
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
         mountRef.current.appendChild(renderer.domElement);
 
         const geometry = new THREE.PlaneGeometry(200, 200, 64, 64);
@@ -633,10 +633,10 @@ const Preloader = ({ onComplete }) => {
                 if (prev >= 100) {
                     clearInterval(interval);
                     stopAmbient();
-                    setTimeout(onComplete, 500); 
+                    setTimeout(onComplete, 500);
                     return 100;
                 }
-                return prev + Math.random() * 2 + 1; 
+                return prev + Math.random() * 2 + 1;
             });
         }, 90); // 90ms interval (approx 4.5s total loading + 0.5s exit = 5s total)
         return () => {

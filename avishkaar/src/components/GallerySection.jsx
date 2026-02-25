@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import { Camera, Droplets } from "lucide-react";
-import WaveDivider from "./WaveDivider";
+import { Camera } from "lucide-react";
+import FloatingParticles from "./FloatingParticles";
 // Placeholder gallery images with different sizes
 const galleryImages = [
   { id: 1, title: "Hackathon Kickoff", size: "large" },
@@ -17,14 +17,9 @@ const galleryImages = [
 const GallerySection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  return (<section ref={ref} className="relative py-24 overflow-hidden water-bg-effect" id="gallery">
+  return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="gallery">
 
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <WaveDivider variant="top" />
-
-
+    <FloatingParticles count={40} />
 
     <motion.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.1), transparent 70%)',
@@ -35,7 +30,7 @@ const GallerySection = () => {
 
     <div className="container mx-auto px-4 relative z-10">
       <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} className="text-center mb-16">
-        <motion.h2 className="font-display text-3xl md:text-5xl font-black mb-4 text-gradient-water">
+        <motion.h2 className="font-display text-3xl md:text-5xl font-black mb-4 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
           TECH FEST GALLERY
         </motion.h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">

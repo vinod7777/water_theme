@@ -9,10 +9,13 @@ import PartnersSection from "@/components/PartnersSection";
 import FAQSection from "@/components/FAQSection";
 import WelcomeSection from "@/components/WelcomeSection";
 import Footer from "@/components/Footer";
+import DeepOceanWrapper from "@/components/DeepOceanWrapper";
+
 const Index = () => {
-    return (<div className="min-h-screen bg-background scroll-smooth overflow-x-hidden">
-      <Navbar />
-      <main className="contain-paint">
+  return (<div className="min-h-screen bg-background scroll-smooth overflow-x-hidden">
+    <Navbar />
+    <DeepOceanWrapper>
+      <main className="contain-paint relative z-10">
         <HeroSection />
         <AboutSection />
         <ThemesSection />
@@ -24,6 +27,7 @@ const Index = () => {
         <WelcomeSection />
       </main>
       <Footer />
-    </div>);
+    </DeepOceanWrapper>
+  </div>);
 };
 export default Index;

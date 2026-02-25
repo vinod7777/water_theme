@@ -21,7 +21,7 @@ const ReadableParticleLoader = () => {
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
         container.appendChild(renderer.domElement);
 
         let particles;
@@ -123,6 +123,7 @@ const ReadableParticleLoader = () => {
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
+            if (document.body.classList.contains('nav-open')) return;
             const time = clock.getElapsedTime();
 
             if (particles) {

@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import { Droplets } from "lucide-react";
-import WaveDivider from "./WaveDivider";
+import FloatingParticles from "./FloatingParticles";
 const sponsors = [
   { name: "GeeksForGeeks", initials: "GFG" },
   { name: "CCC", initials: "CCC" },
@@ -23,13 +22,9 @@ const sponsors = [
 const SponsorsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  return (<section ref={ref} className="relative py-24 overflow-hidden water-bg-effect" id="sponsors">
+  return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="sponsors">
 
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <WaveDivider variant="top" />
-
+    <FloatingParticles count={40} />
 
     <motion.div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none" style={{
       background: 'radial-gradient(ellipse, hsl(195, 100%, 50% / 0.15), transparent 70%)',
@@ -41,7 +36,7 @@ const SponsorsSection = () => {
     <div className="container mx-auto px-4 relative z-10">
 
       <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} className="text-center mb-16">
-        <motion.h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-water">
+        <motion.h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
           OUR SPONSORS
         </motion.h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">

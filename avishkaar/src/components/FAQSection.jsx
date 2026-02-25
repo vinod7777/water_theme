@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Droplets } from 'lucide-react';
-import WaveDivider from './WaveDivider';
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import FloatingParticles from './FloatingParticles';
 const faqData = {
   virtual: [
     {
@@ -82,14 +81,11 @@ const FAQSection = () => {
   const handleToggle = (id) => {
     setOpenFAQ(openFAQ === id ? null : id);
   };
-  return (<section className="relative py-24 overflow-hidden water-bg-effect" id="faq">
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-    <div className="absolute inset-0 bg-gradient-to-b from-background via-deep-sea to-background" />
-
-
-    <WaveDivider variant="top" />
-
-
+  return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="faq">
+    <FloatingParticles count={40} />
 
     <motion.div className="absolute top-1/4 left-0 w-[400px] h-[400px] pointer-events-none" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.1), transparent 70%)',
@@ -107,7 +103,7 @@ const FAQSection = () => {
     <div className="container mx-auto px-4 relative z-10">
 
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center mb-16">
-        <motion.h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-water">
+        <motion.h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
           Frequently Asked Questions
         </motion.h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -123,7 +119,7 @@ const FAQSection = () => {
       <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
 
         <div>
-          <motion.h3 initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-2xl md:text-3xl font-display font-bold mb-8 flex items-center gap-3 text-gradient-water">
+          <motion.h3 initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-2xl md:text-3xl font-display font-bold mb-8 flex items-center gap-3 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
             Virtual Hackathon
           </motion.h3>
           <div>
@@ -133,7 +129,7 @@ const FAQSection = () => {
 
 
         <div>
-          <motion.h3 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-2xl md:text-3xl font-display font-bold mb-8 flex items-center gap-3 text-gradient-water">
+          <motion.h3 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-2xl md:text-3xl font-display font-bold mb-8 flex items-center gap-3 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
             Physical Hackathon
           </motion.h3>
           <div>
